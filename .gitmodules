@@ -1,0 +1,3 @@
+[submodule "supabase/functions/_core"]
+	path = supabase/functions/_core
+	url = git@github.com:wikisim/wikisim-core.git

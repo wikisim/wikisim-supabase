@@ -1,0 +1,8 @@
+{
+  "spec": ["src/**/*.test.ts", "lib/core/src/**/*.test.ts"],
+  "ignore": "**/*.browser.test.ts",
+  "import": "tsx",
+  "extensions": ["ts", "tsx"],
+  "require": [],
+  "timeout": 0
+}

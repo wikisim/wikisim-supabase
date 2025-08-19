@@ -145,7 +145,7 @@ BEGIN
         p_units,
         p_dimension_ids,
         converted_plain_text_result.plain_title, -- Server-side converted plain text
-        converted_plain_text_result.plain_description -- Server-side converted plain text
+        converted_plain_text_result.plain_description, -- Server-side converted plain text
         p_test_run_id,
         p_id
     ) RETURNING * INTO new_row;

@@ -1,7 +1,7 @@
 
 -- TODO remove this once we have improved integration test to allow logging in/out
 -- with different users.
-CREATE OR REPLACE FUNCTION __testing_insert_test_data(
+CREATE OR REPLACE FUNCTION __testing_insert_test_data_component(
     p_id INTEGER,
     p_test_run_id TEXT
 )

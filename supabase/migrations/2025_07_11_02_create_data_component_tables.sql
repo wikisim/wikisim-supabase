@@ -61,17 +61,18 @@ CREATE TABLE data_components
 );
 
 
--- Create search indices for data_components
-CREATE INDEX idx_data_components_search_vector ON data_components USING GIN (search_vector);
-
 -- Create extension_pg_trgm schema if not exists
 CREATE SCHEMA IF NOT EXISTS extension_pg_trgm;
 GRANT USAGE ON SCHEMA extension_pg_trgm TO authenticated, anon;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA extension_pg_trgm TO authenticated, anon;
 
+-- Create the pg_trgm extension inside the extension_pg_trgm schema
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA extension_pg_trgm;
+
+-- Create search indices for data_components
+CREATE INDEX idx_data_components_search_vector ON data_components USING GIN (search_vector);
 CREATE INDEX idx_data_components_plain_search_text_trgm
-  ON data_components USING GIN (plain_search_text gin_trgm_ops);
+  ON data_components USING GIN (plain_search_text extension_pg_trgm.gin_trgm_ops);
 
 
 

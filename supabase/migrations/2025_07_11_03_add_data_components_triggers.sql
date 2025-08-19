@@ -115,7 +115,8 @@ BEGIN
         description,
         label_ids,
 
-        value,
+        input_value,
+        result_value,
         value_type,
         value_number_display_type,
         value_number_sig_figs,
@@ -146,7 +147,8 @@ BEGIN
         NEW.description,
         NEW.label_ids,
 
-        NEW.value,
+        NEW.input_value,
+        NEW.result_value,
         NEW.value_type,
         NEW.value_number_display_type,
         NEW.value_number_sig_figs,

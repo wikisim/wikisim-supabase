@@ -31,7 +31,8 @@ CREATE TABLE data_components
     description TEXT NOT NULL,
     label_ids INTEGER[], -- Array of dimension IDs numbers in format: 5678
 
-    value TEXT,
+    input_value TEXT, -- This is the raw input value before any processing
+    result_value TEXT,
     value_type data_component_value_type,
     value_number_display_type data_component_value_number_display_type,
     value_number_sig_figs SMALLINT, -- Number of significant figures to display for numbers
@@ -94,7 +95,8 @@ CREATE TABLE data_components_archive
     description TEXT NOT NULL,
     label_ids INTEGER[], -- Array of dimension IDs numbers in format: 5678
 
-    value TEXT,
+    input_value TEXT, -- This is the raw input value before any processing
+    result_value TEXT,
     value_type data_component_value_type,
     value_number_display_type data_component_value_number_display_type,
     value_number_sig_figs SMALLINT, -- Number of significant figures to display for numbers

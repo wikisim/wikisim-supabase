@@ -75,9 +75,10 @@ CREATE INDEX idx_data_components_plain_search_text_trgm
 
 
 
-CREATE TABLE data_components_archive
+CREATE TABLE data_components_history
 (
-    id INTEGER NOT NULL, -- This is the ID of the data component, not the version
+    -- This is the ID of the data component, and does not include the version_number
+    id INTEGER NOT NULL,
 
     -- For managing personal / private data
     owner_id uuid NULL, -- The user who owns this component
@@ -111,11 +112,11 @@ CREATE TABLE data_components_archive
 
     test_run_id TEXT, -- Optional field for test runs
 
-    CONSTRAINT data_components_archive_pkey PRIMARY KEY (id, version_number),
-    CONSTRAINT data_components_archive_id_fkey FOREIGN KEY (id) REFERENCES data_components(id),
-    CONSTRAINT data_components_archive_owner_id_fk FOREIGN KEY (owner_id) REFERENCES auth.users(id),
-    CONSTRAINT data_components_archive_editor_id_fk FOREIGN KEY (editor_id) REFERENCES auth.users(id),
-    CONSTRAINT data_components_archive_test_data_id_and_run_id_consistency
+    CONSTRAINT data_components_history_pkey PRIMARY KEY (id, version_number),
+    CONSTRAINT data_components_history_id_fkey FOREIGN KEY (id) REFERENCES data_components(id),
+    CONSTRAINT data_components_history_owner_id_fk FOREIGN KEY (owner_id) REFERENCES auth.users(id),
+    CONSTRAINT data_components_history_editor_id_fk FOREIGN KEY (editor_id) REFERENCES auth.users(id),
+    CONSTRAINT data_components_history_test_data_id_and_run_id_consistency
     CHECK (
         (id < 0 AND test_run_id IS NOT NULL AND test_run_id <> '')
         OR

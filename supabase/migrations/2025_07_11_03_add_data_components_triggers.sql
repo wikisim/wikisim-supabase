@@ -98,7 +98,7 @@ LANGUAGE plpgsql
 SET search_path = 'public'
 AS $$
 BEGIN
-    INSERT INTO data_components_archive (
+    INSERT INTO data_components_history (
         id,
 
         owner_id,

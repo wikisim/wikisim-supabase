@@ -89,6 +89,8 @@ BEGIN
         p_id := nextval('data_components_id_seq'); -- Use sequence for new IDs
     ELSIF p_id >= 0 THEN
         RAISE EXCEPTION 'ERR05. p_id must be negative for test runs, got %', p_id;
+    ELSIF p_id < -20 THEN
+        RAISE EXCEPTION 'ERR13. p_id must be negative for test runs but no smaller than -20, got %', p_id;
     ELSIF p_test_run_id IS NULL THEN
         RAISE EXCEPTION 'ERR06. p_test_run_id must be provided for test runs with negative id of %, but got %', p_id, p_test_run_id;
     END IF;

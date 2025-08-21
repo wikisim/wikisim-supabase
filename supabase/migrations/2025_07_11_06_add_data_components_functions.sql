@@ -81,16 +81,16 @@ BEGIN
     --     RAISE EXCEPTION 'ERR04. editor_id must match your user id';
     -- END IF;
 
+    IF p_owner_id IS NOT NULL AND p_owner_id <> auth.uid() THEN
+        RAISE EXCEPTION 'ERR10. owner_id must match your user id or be NULL';
+    END IF;
+
     IF p_id IS NULL THEN
         p_id := nextval('data_components_id_seq'); -- Use sequence for new IDs
     ELSIF p_id >= 0 THEN
         RAISE EXCEPTION 'ERR05. p_id must be negative for test runs, got %', p_id;
     ELSIF p_test_run_id IS NULL THEN
         RAISE EXCEPTION 'ERR06. p_test_run_id must be provided for test runs with negative id of %, but got %', p_id, p_test_run_id;
-    END IF;
-
-    IF p_owner_id IS NOT NULL AND p_owner_id <> auth.uid() THEN
-        RAISE EXCEPTION 'ERR10. owner_id must match your user id or be NULL';
     END IF;
 
     -- Call Edge Function to convert TipTap content to plain text

@@ -67,6 +67,10 @@ DECLARE
     new_row data_components;
     converted_plain_text_result RECORD;
 BEGIN
+    -- -- Would like to add a timeout to prevent hanging connections, but this
+    -- -- does not work: https://stackoverflow.com/a/38509019/539490
+    -- SET statement_timeout = '10s';
+
     IF auth.role() <> 'authenticated' THEN
         -- This check is essential in stopping a non-authenticated user because
         -- the `GRANT EXECUTE ... TO authenticated` does not work at this level.
@@ -252,6 +256,10 @@ DECLARE
     updated_row data_components;
     converted_plain_text_result RECORD;
 BEGIN
+    -- -- Would like to add a timeout to prevent hanging connections, but this
+    -- -- does not work: https://stackoverflow.com/a/38509019/539490
+    SET statement_timeout = '10s';
+
     IF auth.role() <> 'authenticated' THEN
         -- This check is essential in stopping a non-authenticated user because
         -- the `GRANT EXECUTE ... TO authenticated` does not work at this level.

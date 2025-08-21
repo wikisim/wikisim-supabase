@@ -60,6 +60,9 @@ CREATE TABLE data_components
     )
 );
 
+-- Applied this on 2025-08-19
+-- ALTER SEQUENCE data_components_id_seq RESTART WITH 1001;
+
 
 -- Create extension_pg_trgm schema if not exists
 CREATE SCHEMA IF NOT EXISTS extension_pg_trgm;

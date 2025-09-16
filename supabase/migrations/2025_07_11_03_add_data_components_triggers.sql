@@ -1,8 +1,11 @@
+CREATE SCHEMA IF NOT EXISTS ws_private;
+
+
 -- Function and trigger on before insert to data_components to ensure version_number starts at 1
-CREATE OR REPLACE FUNCTION check_inserting_data_component_version_number_starts_at_1()
+CREATE OR REPLACE FUNCTION ws_private.check_inserting_data_component_version_number_starts_at_1()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SET search_path = 'public'
+SET search_path = ''
 AS $$
 BEGIN
     IF NEW.version_number <> 1 THEN
@@ -12,17 +15,22 @@ BEGIN
 END;
 $$;
 
-CREATE TRIGGER data_components_version_number_check_trigger
+CREATE TRIGGER data_components_check_inserting_version_number_starts_at_1_trigger
 BEFORE INSERT ON data_components
 FOR EACH ROW
-EXECUTE FUNCTION check_inserting_data_component_version_number_starts_at_1();
+EXECUTE FUNCTION ws_private.check_inserting_data_component_version_number_starts_at_1();
 
 
 -- Function and trigger to set the created_at timestamp on insert or update
-CREATE OR REPLACE FUNCTION set_data_component_created_at()
+--
+-- Note that this is not necessary for `insert` because the created_at field has
+-- a default value of now() so it will be set automatically on insert.  However,
+-- this trigger is required for `update` to ensure that the created_at field is
+-- always set to the current timestamp.
+CREATE OR REPLACE FUNCTION ws_private.set_data_component_created_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SET search_path = 'public'
+SET search_path = ''
 AS $$
 BEGIN
     NEW.created_at := now();
@@ -33,20 +41,59 @@ $$;
 CREATE TRIGGER data_components_set_created_at_trigger
 BEFORE INSERT OR UPDATE ON data_components
 FOR EACH ROW
-EXECUTE FUNCTION set_data_component_created_at();
+EXECUTE FUNCTION ws_private.set_data_component_created_at();
 
 
+
+-- Helper function for validation
+CREATE OR REPLACE FUNCTION ws_private.validate_required_text_field(
+    field_value text,
+    field_name text,
+    error_index integer
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+BEGIN
+    IF field_value IS NULL OR (trim(field_value) = '') THEN
+        RAISE EXCEPTION 'ERR15.% % is required', error_index, field_name;
+    END IF;
+END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION ws_private.check_data_components_title_always_set()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SET search_path = ''
+AS $$
+BEGIN
+    PERFORM ws_private.validate_required_text_field(NEW.title, 'title', 1);
+    PERFORM ws_private.validate_required_text_field(NEW.plain_title, 'plain_title', 3);
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER data_components_check_title_always_set_trigger
+BEFORE INSERT OR UPDATE ON data_components
+FOR EACH ROW
+EXECUTE FUNCTION ws_private.check_data_components_title_always_set();
+
+
+
+-- Function and trigger to check owner_id on update does not change and that it
+-- matches the current authenticated user (via the editor_id field which must match auth.uid())
+--
 -- NOTE: we could disable this trigger and check altogether as the Postgres will
 -- raise an error if p_owner_id is attempted to be sent to the `update_data_component`
 -- function because it does not accept it as a parameter so there is no way to
 -- update the owner_id of a data component once it is set.
---
--- Function and trigger to check owner_id on update does not change and that it
--- matches the current authenticated user (via the editor_id field which must match auth.uid())
-CREATE OR REPLACE FUNCTION check_data_component_owner_id()
+CREATE OR REPLACE FUNCTION ws_private.check_data_component_owner_id()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SET search_path = 'public'
+SET search_path = ''
 AS $$
 BEGIN
     -- Check that the provided owner_id is not changed during an update
@@ -63,14 +110,15 @@ $$;
 CREATE TRIGGER data_components_owner_id_update_check_trigger
 BEFORE UPDATE ON data_components
 FOR EACH ROW
-EXECUTE FUNCTION check_data_component_owner_id();
+EXECUTE FUNCTION ws_private.check_data_component_owner_id();
 
 
--- Function and trigger to check version_number on update and increment it
-CREATE OR REPLACE FUNCTION check_data_component_version_number()
+
+-- Function and trigger to check version_number increased on update
+CREATE OR REPLACE FUNCTION ws_private.check_data_component_version_number_increased_on_update()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SET search_path = 'public'
+SET search_path = ''
 AS $$
 BEGIN
     -- Check that the provided version_number matches the current version_number + 1
@@ -85,20 +133,20 @@ BEGIN
 END;
 $$;
 
-CREATE TRIGGER data_components_version_number_update_check_trigger
+CREATE TRIGGER data_components_check_version_number_increased_on_update
 BEFORE UPDATE ON data_components
 FOR EACH ROW
-EXECUTE FUNCTION check_data_component_version_number();
+EXECUTE FUNCTION ws_private.check_data_component_version_number_increased_on_update();
 
 
 -- Function and trigger to archive the new row after insert or update
-CREATE OR REPLACE FUNCTION archive_data_component_after_insert_or_update()
+CREATE OR REPLACE FUNCTION ws_private.archive_data_component_after_insert_or_update()
 RETURNS TRIGGER
 LANGUAGE plpgsql
-SET search_path = 'public'
+SET search_path = ''
 AS $$
 BEGIN
-    INSERT INTO data_components_history (
+    INSERT INTO public.data_components_history (
         id,
 
         owner_id,
@@ -125,6 +173,8 @@ BEGIN
         datetime_repeat_every,
         units,
         dimension_ids,
+        function_arguments,
+        scenarios,
 
         plain_title,
         plain_description,
@@ -157,6 +207,8 @@ BEGIN
         NEW.datetime_repeat_every,
         NEW.units,
         NEW.dimension_ids,
+        NEW.function_arguments,
+        NEW.scenarios,
 
         NEW.plain_title,
         NEW.plain_description,
@@ -168,7 +220,7 @@ END;
 $$;
 
 
-CREATE TRIGGER archive_data_component_after_insert_or_update_trigger
+CREATE TRIGGER data_components_archive_after_insert_or_update_trigger
 AFTER INSERT OR UPDATE ON data_components
 FOR EACH ROW
-EXECUTE FUNCTION archive_data_component_after_insert_or_update();
+EXECUTE FUNCTION ws_private.archive_data_component_after_insert_or_update();

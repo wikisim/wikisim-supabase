@@ -1,4 +1,3 @@
-// @ts-expect-error its deno
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts"
 
 import { shared_convert_tiptap_text_to_plain_text } from "../_core/src/rich_text/shared_convert_tiptap_to_plain.ts"

@@ -1,7 +1,7 @@
 
 -- TODO remove this once we have improved integration test to allow logging in/out
 -- with different users.
-CREATE OR REPLACE FUNCTION __testing_insert_test_data_component(
+CREATE OR REPLACE FUNCTION public.__testing_insert_test_data_component(
     p_id INTEGER,
     p_test_run_id TEXT
 )
@@ -16,7 +16,7 @@ BEGIN
     IF auth.role() <> 'authenticated' THEN
         -- This check is essential in stopping a non-authenticated user because
         -- the `GRANT EXECUTE ... TO authenticated` does not work at this level.
-        RAISE EXCEPTION 'ERR07. Must be authenticated';
+        RAISE EXCEPTION 'ERR07.v2. Must be authenticated';
     END IF;
 
     IF p_id IS NULL OR p_test_run_id IS NULL THEN
@@ -43,11 +43,13 @@ BEGIN
         -- Hard code to AJPtest2 user id
         'c3b9d96b-dc5c-4f5f-9698-32eaf601b7f2',
         1, -- initial version number
-        auth.uid(),
+        -- Coalesce used here so that the function can be run from Supabase's
+        -- web SQL editor
+        COALESCE(auth.uid(), 'c3b9d96b-dc5c-4f5f-9698-32eaf601b7f2'),
         0,
+        '__testing_insert_test_data_component title',
         '',
-        '',
-        '',
+        '__testing_insert_test_data_component title',
         '',
         p_test_run_id
     ) RETURNING * INTO new_row;

@@ -1,5 +1,10 @@
 -- Enums for value_type and version_type
-CREATE TYPE data_component_value_type AS ENUM ('number', 'datetime_range', 'number_array');
+CREATE TYPE data_component_value_type AS ENUM (
+    'number',
+    'datetime_range',
+    'number_array',
+    'function'
+);
 CREATE TYPE data_component_datetime_repeat_every AS ENUM ('second', 'minute', 'hour', 'day', 'month', 'year', 'decade', 'century');
 CREATE TYPE data_component_version_type AS ENUM ('minor', 'rollback');
 CREATE TYPE data_component_value_number_display_type AS ENUM (
@@ -41,6 +46,8 @@ CREATE TABLE data_components
     datetime_repeat_every data_component_datetime_repeat_every,
     units TEXT,
     dimension_ids TEXT[], -- Array of dimension IDs & version numbers in format: `5678v2`
+    function_arguments JSONB, -- Array of function arguments (inputs) for function type data components
+    scenarios JSONB, -- Array of scenarios for function type data components
 
     plain_title TEXT NOT NULL,
     plain_description TEXT NOT NULL,
@@ -110,6 +117,8 @@ CREATE TABLE data_components_history
     datetime_repeat_every data_component_datetime_repeat_every,
     units TEXT,
     dimension_ids TEXT[], -- Array of dimension IDs & version numbers in format: `5678v2`
+    function_arguments JSONB, -- Array of function arguments (inputs) for function type data components
+    scenarios JSONB, -- Array of scenarios for function type data components
 
     plain_title TEXT NOT NULL,
     plain_description TEXT NOT NULL,

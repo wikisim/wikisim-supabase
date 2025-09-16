@@ -1,17 +1,28 @@
 # Supabase Edge Function Deployment Guide
 
 Suggest installing Denoland extension for Deno support in VS Code: https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
+Which also needs the deno CLI: https://deno.land/manual/getting_started/installation
+Deno, should already be enabled for this workspace (via .vscode/settings.json)
+
+## Local dev problems
+
+May need to store dependencies manually in the deno cache with:
+```bash
+deno cache https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts
+```
 
 ## Prerequisites
 1. Install Supabase CLI: `brew install supabase/tap/supabase`
-2. Login to Supabase: `supabase login`
-3. Link the project: `supabase link --project-ref sfkgqscbwofiphfxhnxg`
+2. Login to Supabase: `supabase login` when prompted, enter your access token from https://app.supabase.com/account/tokens (create one if you haven't already and then store it securely locally)
+3. Check it worked: `supabase projects list`
+4. Link the project: `supabase link --project-ref sfkgqscbwofiphfxhnxg`
 
-## Deploy the Edge Function
+## Deploy the Edge Functions
 
-From the project root, run:
+To deploy all edge functions from the project root, run:
 ```bash
-supabase functions deploy compute_field_values
+supabase secrets set --env-file .env
+supabase functions deploy
 ```
 
 ## Test the Function
@@ -32,33 +43,8 @@ curl -X POST 'https://sfkgqscbwofiphfxhnxg.supabase.co/functions/v1/compute_fiel
 ```
 
 ## Environment Variables (if needed)
-Create a `.env.local` file in your functions directory:
-```
-CUSTOM_VAR=value
-```
-
-## Adding JavaScript Dependencies
-To add npm packages to your Edge Function:
-
-1. Create an `import_map.json` file:
-```json
-{
-  "imports": {
-    "tiptap": "https://esm.sh/@tiptap/core@2.0.0"
-  }
-}
-```
-
-2. Update your function to use the import map:
-```typescript
-// At the top of index.ts
-import { Editor } from "tiptap"
-```
-
-3. Deploy with the import map:
-```bash
-supabase functions deploy compute_field_values --import-map ./import_map.json
-```
+Create a `.env` file in your functions directory by renaming the `.env*.placeholder`
+files and then populate them with the appropriate values.
 
 ## Performance Considerations
 - Edge Functions may have a 30-second timeout

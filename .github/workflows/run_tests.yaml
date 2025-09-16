@@ -35,5 +35,8 @@ jobs:
       - name: Run Tests && check TypeScript
         run: pnpm run test
 
+      - name: Install dependencies needed for linting
+        run: pnpm install
+
       - name: Run Lint
         run: pnpm run lint

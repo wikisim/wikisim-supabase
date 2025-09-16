@@ -21,20 +21,19 @@ jobs:
         with:
           node-version: '20'
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: latest
           run_install: false
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.4.5
 
-      - name: Run Tests
+      - name: Run Tests && check TypeScript
         run: pnpm run test
-
-      - name: Compile TypeScript
-        run: pnpm run check_compile
 
       - name: Run Lint
         run: pnpm run lint

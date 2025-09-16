@@ -8,7 +8,8 @@ Supabase migrations and edge functions for WikiSim, an open source platform for 
 
 ## Dev
 
-    pnpm install
+    git clone --recursive git@github.com:wikisim/wikisim-supabase.git
+    deno install
 
 ### Setup
 

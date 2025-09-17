@@ -119,7 +119,7 @@ BEGIN
         END IF;
 
         IF component.p_id IS NULL THEN
-            component.p_id := nextval('data_components_id_seq'); -- Use sequence for new IDs
+            component.p_id := nextval('public.data_components_id_seq'); -- Use sequence for new IDs
         ELSIF component.p_id >= 0 THEN
             RAISE EXCEPTION 'ERR05.v2. p_id must be negative for test runs, got %', component.p_id;
         ELSIF component.p_id < -20 THEN

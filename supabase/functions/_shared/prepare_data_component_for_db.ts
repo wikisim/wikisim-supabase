@@ -14,7 +14,10 @@ import type {
     DBDataComponentUpdateV2ArgsComponent,
 } from "../_core/src/supabase/index.ts"
 import {
-    deno_convert_tiptap_text_to_plain_text,
+    deno_convert_tiptap_to_javascript,
+} from "./convert_tiptap_text_to_javascript.deno.ts"
+import {
+    deno_convert_tiptap_to_plain_text,
 } from "./convert_tiptap_text_to_plain_text.deno.ts"
 import { deno_evaluate_code_in_sandbox } from "./evaluate_code_in_sandbox.deno.ts"
 
@@ -28,7 +31,7 @@ export async function prepare_data_component_for_db_insert (
     const result_value_response = await calculate_result_value({
         component: data_component,
         data_component_by_id_and_version,
-        convert_tiptap_to_javascript: deno_convert_tiptap_text_to_plain_text,
+        convert_tiptap_to_javascript: deno_convert_tiptap_to_javascript,
         evaluate_code_in_sandbox: deno_evaluate_code_in_sandbox,
     })
 
@@ -46,8 +49,8 @@ export async function prepare_data_component_for_db_insert (
     let p_id: number | null = null
     if ("id" in row) p_id = row.id
 
-    const p_plain_title = deno_convert_tiptap_text_to_plain_text(row.title)
-    const p_plain_description = deno_convert_tiptap_text_to_plain_text(row.description)
+    const p_plain_title = deno_convert_tiptap_to_plain_text(row.title)
+    const p_plain_description = deno_convert_tiptap_to_plain_text(row.description)
 
     const args: DBDataComponentInsertV2ArgsComponent = {
         p_owner_id: row.owner_id,

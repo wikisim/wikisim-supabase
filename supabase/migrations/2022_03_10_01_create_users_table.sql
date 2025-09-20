@@ -20,6 +20,8 @@ CREATE TABLE ws_private.reserved_usernames (
 
 -- Locking down access to only admin via RLS with no policies
 alter table ws_private.reserved_usernames enable row level security;
+CREATE POLICY "Allow service_role only"
+    ON ws_private.reserved_usernames FOR ALL TO service_role USING (true);
 
 
 -- Adding some reserved usernames, more added via supabase web console, these

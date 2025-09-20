@@ -10,6 +10,9 @@ CREATE TABLE IF NOT EXISTS ws_private.app_secrets (
 -- Enable RLS with NO policies (blocks all direct access)
 ALTER TABLE ws_private.app_secrets ENABLE ROW LEVEL SECURITY;
 
+CREATE POLICY "Allow service_role only"
+    ON ws_private.app_secrets FOR ALL TO service_role USING (true);
+
 -- Use the supabase web interface to create a new secret, e.g.
 -- INSERT INTO ws_private.app_secrets (key_name) VALUES ('server_secret');
 -- then update the edge function environment variable to match the generated

@@ -165,6 +165,7 @@ BEGIN
 
         input_value,
         result_value,
+        recursive_dependency_ids,
         value_type,
         value_number_display_type,
         value_number_sig_figs,
@@ -199,6 +200,7 @@ BEGIN
 
         NEW.input_value,
         NEW.result_value,
+        NEW.recursive_dependency_ids,
         NEW.value_type,
         NEW.value_number_display_type,
         NEW.value_number_sig_figs,

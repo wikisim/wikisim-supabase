@@ -68,6 +68,7 @@ CREATE TYPE public.data_component_insert_params AS (
 
     p_input_value text,
     p_result_value text,
+    p_recursive_dependency_ids text[],
     p_value_type data_component_value_type,
     p_value_number_display_type data_component_value_number_display_type,
     p_value_number_sig_figs smallint,
@@ -145,6 +146,7 @@ BEGIN
             label_ids,
             input_value,
             result_value,
+            recursive_dependency_ids,
             value_type,
             value_number_display_type,
             value_number_sig_figs,
@@ -172,6 +174,7 @@ BEGIN
             component.p_label_ids,
             component.p_input_value,
             component.p_result_value,
+            component.p_recursive_dependency_ids,
             component.p_value_type,
             component.p_value_number_display_type,
             component.p_value_number_sig_figs,
@@ -222,6 +225,7 @@ CREATE TYPE public.data_component_update_params AS (
 
     p_input_value text,
     p_result_value text,
+    p_recursive_dependency_ids text[],
     p_value_type data_component_value_type,
     p_value_number_display_type data_component_value_number_display_type,
     p_value_number_sig_figs smallint,
@@ -284,6 +288,7 @@ BEGIN
 
             input_value = component.p_input_value,
             result_value = component.p_result_value,
+            recursive_dependency_ids = component.p_recursive_dependency_ids,
             value_type = component.p_value_type,
             value_number_display_type = component.p_value_number_display_type,
             value_number_sig_figs = component.p_value_number_sig_figs,

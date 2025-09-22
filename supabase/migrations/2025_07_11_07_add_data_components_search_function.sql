@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE FUNCTION search_data_components(
+CREATE OR REPLACE FUNCTION public.search_data_components(
     query TEXT,
     similarity_threshold FLOAT DEFAULT 0.2,
     limit_n INT DEFAULT 20,
@@ -20,6 +20,7 @@ RETURNS TABLE (
     label_ids INTEGER[],
     input_value TEXT,
     result_value TEXT,
+    recursive_dependency_ids TEXT[],
     value_type data_component_value_type,
     value_number_display_type data_component_value_number_display_type,
     value_number_sig_figs SMALLINT,
@@ -70,6 +71,7 @@ SELECT
     d.label_ids,
     d.input_value,
     d.result_value,
+    d.recursive_dependency_ids,
     d.value_type,
     d.value_number_display_type,
     d.value_number_sig_figs,

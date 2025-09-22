@@ -38,6 +38,7 @@ CREATE TABLE data_components
 
     input_value TEXT, -- This is the raw input value before any processing
     result_value TEXT,
+    recursive_dependency_ids TEXT[], -- Array of data component IDs that this component depends on, including indirect dependencies
     value_type data_component_value_type,
     value_number_display_type data_component_value_number_display_type,
     value_number_sig_figs SMALLINT, -- Number of significant figures to display for numbers
@@ -109,6 +110,7 @@ CREATE TABLE data_components_history
 
     input_value TEXT, -- This is the raw input value before any processing
     result_value TEXT,
+    recursive_dependency_ids TEXT[], -- Array of data component IDs that this component depends on, including indirect dependencies
     value_type data_component_value_type,
     value_number_display_type data_component_value_number_display_type,
     value_number_sig_figs SMALLINT, -- Number of significant figures to display for numbers

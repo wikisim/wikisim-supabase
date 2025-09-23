@@ -9,6 +9,7 @@
         "check": "pnpm run test && pnpm run lint"
     },
     "dependencies": {
+        "@supabase/supabase-js": "2.44.2",
         "zod": "4.1.8"
     },
     "devDependencies": {

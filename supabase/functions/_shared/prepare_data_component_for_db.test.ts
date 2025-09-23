@@ -14,7 +14,7 @@ Deno.test("prepare_data_component_for_db_insert", async () =>
 {
     const data_component: DataComponent = data_component_all_fields_set()
 
-    const result = await prepare_data_component_for_db_insert(data_component)
+    const result = await prepare_data_component_for_db_insert(data_component, () => Promise.resolve([]))
 
     assertEquals(result.p_id, data_component.id.id, "p_id should match expected value")
     assert(!("p_version_number" in result), "p_version_number should not be present")
@@ -53,7 +53,7 @@ Deno.test("prepare_data_component_for_db_update", async () =>
 {
     const data_component: DataComponent = data_component_all_fields_set()
 
-    const result = await prepare_data_component_for_db_update(data_component)
+    const result = await prepare_data_component_for_db_update(data_component, () => Promise.resolve([]))
 
     assertEquals(result.p_id, data_component.id.id, "p_id should match expected value")
     assertEquals(result.p_version_number, data_component.id.version, "p_version_number should match expected value")
@@ -97,7 +97,7 @@ Deno.test(`prepare_data_component_for_db_insert for undefined value_type`, async
         result_value: "123", // result_value should be left as-is by edge function
     })
 
-    const result = await prepare_data_component_for_db_insert(data_component)
+    const result = await prepare_data_component_for_db_insert(data_component, () => Promise.resolve([]))
 
     assertEquals(result.p_result_value, "123", `p_result_value should be left as is when value_type is undefined as should default to "number" type`)
 })
@@ -115,7 +115,7 @@ Deno.test(`prepare_data_component_for_db_insert for "function" value_type`, asyn
         ],
     })
 
-    const result = await prepare_data_component_for_db_insert(data_component)
+    const result = await prepare_data_component_for_db_insert(data_component, () => Promise.resolve([]))
 
     assertEquals(result.p_result_value, "(a, b = 1) => a + b", "p_result_value should be calculated for function value_type")
 })

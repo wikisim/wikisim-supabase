@@ -4,8 +4,8 @@ import {
 } from "../_core/src/data/convert_between_json.ts"
 import {
     DataComponent,
-    NewDataComponent,
     is_data_component,
+    NewDataComponent,
 } from "../_core/src/data/interface.ts"
 import { ERRORS } from "../_core/src/errors.ts"
 import { calculate_result_value } from "../_core/src/evaluator/index.ts"
@@ -20,14 +20,16 @@ import {
     deno_convert_tiptap_to_plain_text,
 } from "./deno_convert_tiptap_to_plain.ts"
 import { get_recursive_dependency_ids } from "./get_recursive_dependency_ids.ts"
+import { GetPartialDataComponentsByIdAndVersion } from "./interface.ts"
 
 
 
 export async function prepare_data_component_for_db_insert (
     data_component: DataComponent | NewDataComponent,
+    get_data_components_by_id_and_version: GetPartialDataComponentsByIdAndVersion,
 ): Promise<DBDataComponentInsertV2ArgsComponent>
 {
-    const recursive_dependency_ids = await get_recursive_dependency_ids(data_component)
+    const recursive_dependency_ids = await get_recursive_dependency_ids({ data_component, get_data_components_by_id_and_version })
     data_component.recursive_dependency_ids = recursive_dependency_ids
 
     const result_value_response = await calculate_result_value({
@@ -89,13 +91,14 @@ export async function prepare_data_component_for_db_insert (
 
 export async function prepare_data_component_for_db_update (
     data_component: DataComponent,
+    get_data_components_by_id_and_version: GetPartialDataComponentsByIdAndVersion,
 ): Promise<DBDataComponentUpdateV2ArgsComponent>
 {
     const {
         // deno-lint-ignore no-unused-vars
         p_test_run_id, p_id, p_owner_id,
         ...insert_args
-    } = await prepare_data_component_for_db_insert(data_component)
+    } = await prepare_data_component_for_db_insert(data_component, get_data_components_by_id_and_version)
 
     const args: DBDataComponentUpdateV2ArgsComponent = {
         ...insert_args,

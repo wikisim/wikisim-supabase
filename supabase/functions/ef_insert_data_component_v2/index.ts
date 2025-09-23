@@ -8,6 +8,9 @@ import { ERRORS } from "../_core/src/errors.ts"
 import type {
     EFInsertDataComponentV2Args,
 } from "../_core/src/supabase/edge_functions.ts"
+import {
+    factory_get_data_components_by_id_and_version,
+} from "../_shared/deno_get_data_components_by_id_and_version.ts"
 import { deno_get_supabase } from "../_shared/deno_get_supabase.ts"
 import {
     prepare_data_component_for_db_insert,
@@ -68,10 +71,12 @@ async function save_to_db(supabase: SupabaseClient, payload: EFInsertDataCompone
         return respond(400, { ef_error })
     }
 
+    const get_data_components_by_id_and_version = factory_get_data_components_by_id_and_version(supabase)
+
     // Handle batch conversion (for efficiency when processing multiple items)
     const component_promises = batch
         .map(r => hydrate_data_component_from_json(r, field_validators))
-        .map(prepare_data_component_for_db_insert)
+        .map(r => prepare_data_component_for_db_insert(r, get_data_components_by_id_and_version))
     const components = await Promise.all(component_promises)
 
 

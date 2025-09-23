@@ -32,6 +32,9 @@ jobs:
         with:
           deno-version: v2.4.5
 
+      - name: Install dependencies
+        run: deno install
+
       - name: Run Tests && check TypeScript
         run: pnpm run test
 

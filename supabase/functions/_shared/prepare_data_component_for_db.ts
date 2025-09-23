@@ -15,24 +15,26 @@ import type {
 } from "../_core/src/supabase/index.ts"
 import {
     deno_convert_tiptap_to_javascript,
-} from "./convert_tiptap_text_to_javascript.deno.ts"
+} from "./deno_convert_tiptap_to_javascript.ts"
 import {
     deno_convert_tiptap_to_plain_text,
-} from "./convert_tiptap_text_to_plain_text.deno.ts"
-import { deno_evaluate_code_in_sandbox } from "./evaluate_code_in_sandbox.deno.ts"
+} from "./deno_convert_tiptap_to_plain.ts"
+import { get_recursive_dependency_ids } from "./get_recursive_dependency_ids.ts"
 
 
 
 export async function prepare_data_component_for_db_insert (
     data_component: DataComponent | NewDataComponent,
-    data_component_by_id_and_version: Record<string, DataComponent>,
 ): Promise<DBDataComponentInsertV2ArgsComponent>
 {
+    const recursive_dependency_ids = await get_recursive_dependency_ids(data_component)
+    data_component.recursive_dependency_ids = recursive_dependency_ids
+
     const result_value_response = await calculate_result_value({
         component: data_component,
-        data_component_by_id_and_version,
+        data_components_by_id_and_version: {},
         convert_tiptap_to_javascript: deno_convert_tiptap_to_javascript,
-        evaluate_code_in_sandbox: deno_evaluate_code_in_sandbox,
+        evaluate_code_in_sandbox: undefined,
     })
 
     if (result_value_response?.error)
@@ -63,6 +65,7 @@ export async function prepare_data_component_for_db_insert (
         p_label_ids: row.label_ids,
         p_input_value: row.input_value,
         p_result_value,
+        p_recursive_dependency_ids: row.recursive_dependency_ids,
         p_value_type: row.value_type,
         p_value_number_display_type: row.value_number_display_type,
         p_value_number_sig_figs: row.value_number_sig_figs,
@@ -86,14 +89,13 @@ export async function prepare_data_component_for_db_insert (
 
 export async function prepare_data_component_for_db_update (
     data_component: DataComponent,
-    data_component_by_id_and_version: Record<string, DataComponent>,
 ): Promise<DBDataComponentUpdateV2ArgsComponent>
 {
     const {
         // deno-lint-ignore no-unused-vars
         p_test_run_id, p_id, p_owner_id,
         ...insert_args
-    } = await prepare_data_component_for_db_insert(data_component, data_component_by_id_and_version)
+    } = await prepare_data_component_for_db_insert(data_component)
 
     const args: DBDataComponentUpdateV2ArgsComponent = {
         ...insert_args,

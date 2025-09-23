@@ -68,8 +68,9 @@ async function save_to_db(supabase: SupabaseClient, payload: EFUpdateDataCompone
     }
 
     // Handle batch conversion (for efficiency when processing multiple items)
-    const component_promises = batch.map(r => hydrate_data_component_from_json(r, field_validators))
-        .map(r => prepare_data_component_for_db_update(r, {}))
+    const component_promises = batch
+        .map(r => hydrate_data_component_from_json(r, field_validators))
+        .map(prepare_data_component_for_db_update)
     const components = await Promise.all(component_promises)
 
 

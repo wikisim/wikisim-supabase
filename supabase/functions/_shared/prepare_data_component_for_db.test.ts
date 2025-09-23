@@ -1,52 +1,20 @@
 /// <reference lib="deno.ns" />
-import { assert, assertEquals } from "https://deno.land/std/assert/mod.ts"
+import { assert, assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts"
 
-import { IdAndVersion } from "../_core/src/data/id.ts"
 import { DataComponent } from "../_core/src/data/interface.ts"
+import { data_component_all_fields_set } from "../_core/src/test/fixtures.ts"
 import {
     prepare_data_component_for_db_insert,
     prepare_data_component_for_db_update,
 } from "./prepare_data_component_for_db.ts"
 
 
-function data_component_fixture(override: Partial<DataComponent> = {}): DataComponent
-    {
-        return {
-            id: new IdAndVersion(-1, 3),
-            owner_id: "owner-123",
-            editor_id: "editor-123",
-            created_at: new Date("2023-01-01T00:00:00Z"),
-            comment: "Test comment",
-            bytes_changed: 100,
-            version_type: "minor",
-            version_rolled_back_to: 1,
-            title: "<p>Test Title</p>",
-            description: "<p>Test Description</p>",
-            label_ids: [-3, -4],
-            input_value: "123",
-            result_value: "123",
-            value_type: "number",
-            value_number_display_type: "bare",
-            value_number_sig_figs: 2,
-            datetime_range_start: new Date("2023-01-01T00:00:00Z"),
-            datetime_range_end: new Date("2023-01-02T00:00:00Z"),
-            datetime_repeat_every: "day",
-            units: "units",
-            dimension_ids: [new IdAndVersion(-2, 1)],
-            function_arguments: [],
-            scenarios: [],
-
-            plain_title: "",
-            plain_description: "",
-            ...override,
-        }
-    }
 
 Deno.test("prepare_data_component_for_db_insert", async () =>
 {
-    const data_component: DataComponent = data_component_fixture()
+    const data_component: DataComponent = data_component_all_fields_set()
 
-    const result = await prepare_data_component_for_db_insert(data_component, {})
+    const result = await prepare_data_component_for_db_insert(data_component)
 
     assertEquals(result.p_id, data_component.id.id, "p_id should match expected value")
     assert(!("p_version_number" in result), "p_version_number should not be present")
@@ -70,19 +38,22 @@ Deno.test("prepare_data_component_for_db_insert", async () =>
     assertEquals(result.p_datetime_repeat_every, data_component.datetime_repeat_every, "p_datetime_repeat_every should match expected value")
     assertEquals(result.p_units, data_component.units, "p_units should match expected value")
     assertEquals(result.p_dimension_ids, data_component.dimension_ids!.map(d => d.to_str()), "p_dimension_ids should match expected value")
-    assertEquals(result.p_function_arguments, data_component.function_arguments as unknown, "p_function_arguments should match expected value")
-    assertEquals(result.p_scenarios, data_component.scenarios as unknown, "p_scenarios should match expected value")
-    assertEquals(result.p_plain_title, "Test Title", "p_plain_title should be calculated from tiptap text")
-    assertEquals(result.p_plain_description, "Test Description", "p_plain_description should be calculated from tiptap text")
-    assertEquals(result.p_test_run_id, null, "p_test_run_id should match expected value")
+    assertEquals(result.p_function_arguments, no_ids(data_component.function_arguments), "p_function_arguments should match expected value")
+    assertEquals(result.p_scenarios, no_ids(data_component.scenarios) as unknown, "p_scenarios should match expected value")
+
+    assertEquals(data_component.title, "<p>Modified Title</p>", "Assert what component.title was")
+    assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
+    assertEquals(result.p_plain_title, "Modified Title", "p_plain_title should be calculated from tiptap text")
+    assertEquals(result.p_plain_description, "Modified Description", "p_plain_description should be calculated from tiptap text")
+    assertEquals(result.p_test_run_id, "test_run_-789", "p_test_run_id should match expected value")
 })
 
 
 Deno.test("prepare_data_component_for_db_update", async () =>
 {
-    const data_component: DataComponent = data_component_fixture()
+    const data_component: DataComponent = data_component_all_fields_set()
 
-    const result = await prepare_data_component_for_db_update(data_component, {})
+    const result = await prepare_data_component_for_db_update(data_component)
 
     assertEquals(result.p_id, data_component.id.id, "p_id should match expected value")
     assertEquals(result.p_version_number, data_component.id.version, "p_version_number should match expected value")
@@ -106,28 +77,53 @@ Deno.test("prepare_data_component_for_db_update", async () =>
     assertEquals(result.p_datetime_repeat_every, data_component.datetime_repeat_every, "p_datetime_repeat_every should match expected value")
     assertEquals(result.p_units, data_component.units, "p_units should match expected value")
     assertEquals(result.p_dimension_ids, data_component.dimension_ids!.map(d => d.to_str()), "p_dimension_ids should match expected value")
-    assertEquals(result.p_function_arguments, data_component.function_arguments as unknown, "p_function_arguments should match expected value")
-    assertEquals(result.p_scenarios, data_component.scenarios as unknown, "p_scenarios should match expected value")
-    assertEquals(result.p_plain_title, "Test Title", "p_plain_title should be calculated from tiptap text")
-    assertEquals(result.p_plain_description, "Test Description", "p_plain_description should be calculated from tiptap text")
+    assertEquals(result.p_function_arguments, no_ids(data_component.function_arguments), "p_function_arguments should match expected value")
+    assertEquals(result.p_scenarios, no_ids(data_component.scenarios) as unknown, "p_scenarios should match expected value")
+
+    assertEquals(data_component.title, "<p>Modified Title</p>", "Assert what component.title was")
+    assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
+    assertEquals(result.p_plain_title, "Modified Title", "p_plain_title should be calculated from tiptap text")
+    assertEquals(result.p_plain_description, "Modified Description", "p_plain_description should be calculated from tiptap text")
     assert(!("p_test_run_id" in result), "p_test_run_id should not be present")
 })
 
 
 
+Deno.test(`prepare_data_component_for_db_insert for undefined value_type`, async () =>
+{
+    const data_component: DataComponent = data_component_all_fields_set({
+        value_type: undefined,
+        input_value: "a + b",
+        result_value: "123", // result_value should be left as-is by edge function
+    })
+
+    const result = await prepare_data_component_for_db_insert(data_component)
+
+    assertEquals(result.p_result_value, "123", `p_result_value should be left as is when value_type is undefined as should default to "number" type`)
+})
+
+
 Deno.test(`prepare_data_component_for_db_insert for "function" value_type`, async () =>
 {
-    const data_component: DataComponent = data_component_fixture({
+    const data_component: DataComponent = data_component_all_fields_set({
         value_type: "function",
         input_value: "a + b",
-        result_value: "", // result_value should be set by function
+        result_value: "", // result_value should be set by edge function
         function_arguments: [
             { id: 0, name: "a" },
             { id: 1, name: "b", default_value: "1" },
         ],
     })
 
-    const result = await prepare_data_component_for_db_insert(data_component, {})
+    const result = await prepare_data_component_for_db_insert(data_component)
 
     assertEquals(result.p_result_value, "(a, b = 1) => a + b", "p_result_value should be calculated for function value_type")
 })
+
+
+function no_ids<T extends { id: number }>(items?: T[]): undefined | (Omit<T, "id">[])
+{
+    if (!items) return items
+
+    return items.map(({ id: _, ...rest }) => rest)
+}

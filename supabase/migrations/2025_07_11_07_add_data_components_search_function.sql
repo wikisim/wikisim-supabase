@@ -3,7 +3,23 @@ CREATE OR REPLACE FUNCTION public.search_data_components(
     query TEXT,
     similarity_threshold FLOAT DEFAULT 0.2,
     limit_n INT DEFAULT 20,
-    offset_n INT DEFAULT 0
+    offset_n INT DEFAULT 0,
+    -- Not implemented yet but could have options:
+    -- 'score', 'created_at DESC', 'created_at ASC'
+    order_by TEXT DEFAULT 'score',
+    -- Not implemented yet but could have options:
+    -- NULL, 'wiki', 'owned'
+    -- Note that if 'wiki' is specified, then will return no results if
+    -- `filter_by_owner_id` is also specified.
+    filter_by_wiki_or_owned TEXT DEFAULT NULL,
+    -- Will filter to only components owned by this owner_id
+    filter_by_owner_id UUID DEFAULT NULL,
+    -- Not implemented yet
+    filter_by_label_id INT DEFAULT NULL,
+    -- Not implemented yet
+    -- Will filter to only this component or its dependencies in
+    -- `recursive_dependency_ids`
+    filter_by_component_id INT DEFAULT NULL
 )
 RETURNS TABLE (
     id INT,
@@ -53,7 +69,19 @@ WITH params AS (
             OR query LIKE '% OR %'
             OR query LIKE '% AND %'
             OR query LIKE '% -%'
-        ) as use_websearch
+        ) as use_websearch,
+        (
+            query IS NULL OR TRIM(query) = ''
+        ) as use_match_all,
+        (
+            NOT (
+                query LIKE '%"%'
+                OR query LIKE '% OR %'
+                OR query LIKE '% AND %'
+                OR query LIKE '% -%'
+            )
+            AND (query IS NOT NULL AND TRIM(query) <> '')
+        ) as use_similarity_search
 )
 
 SELECT
@@ -93,6 +121,17 @@ FROM (
         combined.score,
         combined.method
     FROM (
+
+        -- Return all rows if query is empty
+        SELECT
+            id,
+            1.0 AS score, -- or 0, or NULL, as appropriate
+            0 AS method
+        FROM data_components, params
+        WHERE use_match_all
+
+        UNION ALL
+
         -- Full-text search using websearch_to_tsquery (for queries with quotes/operators)
         SELECT
             id,
@@ -110,7 +149,7 @@ FROM (
             extension_pg_trgm.similarity(plain_search_text, query) AS score,
             2 AS method
         FROM data_components, params
-        WHERE NOT params.use_websearch
+        WHERE params.use_similarity_search
         AND extension_pg_trgm.similarity(plain_search_text, query) > similarity_threshold
 
         UNION ALL
@@ -121,7 +160,7 @@ FROM (
             ts_rank_cd(search_vector, websearch_to_tsquery('english', query), 32) AS score,
             1 AS method
         FROM data_components, params
-        WHERE NOT params.use_websearch
+        WHERE params.use_similarity_search
         AND search_vector @@ websearch_to_tsquery('english', query)
 
     ) AS combined

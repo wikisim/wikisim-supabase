@@ -1,17 +1,28 @@
 
+CREATE TYPE ws_private.search_data_components_order_by AS ENUM (
+    'score',
+    'created_at DESC',
+    'created_at ASC'
+);
+
+CREATE TYPE ws_private.search_data_components_filter_by_wiki_or_owned AS ENUM (
+    'wiki',
+    'owned'
+);
+
+
 CREATE OR REPLACE FUNCTION public.search_data_components(
     query TEXT,
     similarity_threshold FLOAT DEFAULT 0.2,
     limit_n INT DEFAULT 20,
     offset_n INT DEFAULT 0,
-    -- Not implemented yet but could have options:
-    -- 'score', 'created_at DESC', 'created_at ASC'
-    order_by TEXT DEFAULT 'score',
+    -- Not implemented yet
+    order_by ws_private.search_data_components_order_by DEFAULT 'score',
     -- Not implemented yet but could have options:
     -- NULL, 'wiki', 'owned'
     -- Note that if 'wiki' is specified, then will return no results if
     -- `filter_by_owner_id` is also specified.
-    filter_by_wiki_or_owned TEXT DEFAULT NULL,
+    filter_by_wiki_or_owned ws_private.search_data_components_filter_by_wiki_or_owned DEFAULT NULL,
     -- Will filter to only components owned by this owner_id
     filter_by_owner_id UUID DEFAULT NULL,
     -- Not implemented yet

@@ -1,11 +1,15 @@
 
-CREATE TYPE ws_private.search_data_components_order_by AS ENUM (
+-- This is public so that it will be added to interface.ts and more easily used
+-- in API calls
+CREATE TYPE public.search_data_components_order_by AS ENUM (
     'score',
     'created_at DESC',
     'created_at ASC'
 );
 
-CREATE TYPE ws_private.search_data_components_filter_by_wiki_or_owned AS ENUM (
+-- This is public so that it will be added to interface.ts and more easily used
+-- in API calls
+CREATE TYPE public.search_data_components_filter_by_wiki_or_owned AS ENUM (
     'wiki',
     'owned'
 );
@@ -17,12 +21,12 @@ CREATE OR REPLACE FUNCTION public.search_data_components(
     limit_n INT DEFAULT 20,
     offset_n INT DEFAULT 0,
     -- Not implemented yet
-    order_by ws_private.search_data_components_order_by DEFAULT 'score',
+    order_by public.search_data_components_order_by DEFAULT 'score',
     -- Not implemented yet but could have options:
     -- NULL, 'wiki', 'owned'
     -- Note that if 'wiki' is specified, then will return no results if
     -- `filter_by_owner_id` is also specified.
-    filter_by_wiki_or_owned ws_private.search_data_components_filter_by_wiki_or_owned DEFAULT NULL,
+    filter_by_wiki_or_owned public.search_data_components_filter_by_wiki_or_owned DEFAULT NULL,
     -- Will filter to only components owned by this owner_id
     filter_by_owner_id UUID DEFAULT NULL,
     -- Not implemented yet
@@ -194,3 +198,4 @@ OFFSET (SELECT final_offset FROM params);
 $$;
 -- Example usage:
 -- SELECT * FROM search_data_components('grav', 0, 10, 0);
+-- SELECT * FROM search_data_components('grav', 0, 100, 0, NULL, NULL, '59a8ceba-a13b-4277-aa71-cd6f3a683172');

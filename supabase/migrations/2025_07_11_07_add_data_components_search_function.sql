@@ -34,7 +34,8 @@ CREATE OR REPLACE FUNCTION public.search_data_components(
     -- Not implemented yet
     -- Will filter to only this component or its dependencies in
     -- `recursive_dependency_ids`
-    filter_by_component_id TEXT DEFAULT NULL
+    filter_by_component_id TEXT DEFAULT NULL,
+    filter_exclude_test_components BOOLEAN DEFAULT TRUE
 )
 RETURNS TABLE (
     id INT,
@@ -148,6 +149,7 @@ FROM (
         FROM data_components, params
         WHERE use_match_all
         AND (params.no_filter_by_owner_id OR (owner_id = filter_by_owner_id))
+        AND ((filter_exclude_test_components AND id >= 0) OR ((filter_exclude_test_components IS NULL OR filter_exclude_test_components = FALSE) AND id < 0))
 
         UNION ALL
 
@@ -159,6 +161,7 @@ FROM (
         FROM data_components, params
         WHERE params.use_websearch
         AND (params.no_filter_by_owner_id OR (owner_id = filter_by_owner_id))
+        AND ((filter_exclude_test_components AND id >= 0) OR ((filter_exclude_test_components IS NULL OR filter_exclude_test_components = FALSE) AND id < 0))
         AND search_vector @@ websearch_to_tsquery('english', query)
 
         UNION ALL
@@ -171,6 +174,7 @@ FROM (
         FROM data_components, params
         WHERE params.use_similarity_search
         AND (params.no_filter_by_owner_id OR (owner_id = filter_by_owner_id))
+        AND ((filter_exclude_test_components AND id >= 0) OR ((filter_exclude_test_components IS NULL OR filter_exclude_test_components = FALSE) AND id < 0))
         AND extension_pg_trgm.similarity(plain_search_text, query) > similarity_threshold
 
         UNION ALL
@@ -183,6 +187,7 @@ FROM (
         FROM data_components, params
         WHERE params.use_similarity_search
         AND (params.no_filter_by_owner_id OR (owner_id = filter_by_owner_id))
+        AND ((filter_exclude_test_components AND id >= 0) OR ((filter_exclude_test_components IS NULL OR filter_exclude_test_components = FALSE) AND id < 0))
         AND search_vector @@ websearch_to_tsquery('english', query)
 
     ) AS combined

@@ -78,7 +78,7 @@ AS $$
 
 WITH params AS (
     SELECT
-        LEAST(GREATEST(limit_n, 1), 20) AS final_limit,  -- clamp to [1, 20]
+        LEAST(GREATEST(limit_n, 1), 101) AS final_limit,  -- clamp to [1, 101]
         LEAST(GREATEST(offset_n, 0), 500) AS final_offset,  -- clamp to [0, 500]
         (
             query LIKE '%"%'
@@ -204,3 +204,4 @@ $$;
 -- Example usage:
 -- SELECT * FROM search_data_components('grav', 0, 10, 0);
 -- SELECT * FROM search_data_components('grav', 0, 100, 0, NULL, NULL, '59a8ceba-a13b-4277-aa71-cd6f3a683172');
+-- SELECT * FROM search_data_components('', 0, 21, 0, NULL, NULL, NULL, NULL, NULL);

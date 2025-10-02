@@ -3,7 +3,8 @@ CREATE TYPE data_component_value_type AS ENUM (
     'number',
     'datetime_range',
     'number_array',
-    'function'
+    'function',
+    'interactable'
 );
 CREATE TYPE data_component_datetime_repeat_every AS ENUM ('second', 'minute', 'hour', 'day', 'month', 'year', 'decade', 'century');
 CREATE TYPE data_component_version_type AS ENUM ('minor', 'rollback');

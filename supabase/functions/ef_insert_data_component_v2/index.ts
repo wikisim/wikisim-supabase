@@ -52,7 +52,7 @@ Deno.serve(async req =>
     catch (error)
     {
         console.error("Unexpected error in ef_insert_data_component_v2:", error, (error as Error).stack)
-        return respond(500, { ef_error: ERRORS.ERR29.message } )
+        return respond(500, { ef_error: ERRORS.ERR29_insert.message } )
     }
 })
 

@@ -48,7 +48,8 @@ Deno.serve(async req =>
     }
     catch (error)
     {
-        return respond(500, { ef_error: (error as Error).message + " " + (error as Error).stack } )
+        console.error("Unexpected error in ef_update_data_component_v2:", error, (error as Error).stack)
+        return respond(500, { ef_error: ERRORS.ERR29_update.message } )
     }
 })
 

@@ -22,7 +22,7 @@ CREATE POLICY "Allow service_role only"
 
 
 
--- Helper function to get secrets, should only be callable from
+-- Helper function to get secrets, should only be callable from private contexts
 CREATE OR REPLACE FUNCTION ws_private.get_app_secret(p_key_name TEXT)
 RETURNS SETOF TEXT
 LANGUAGE plpgsql

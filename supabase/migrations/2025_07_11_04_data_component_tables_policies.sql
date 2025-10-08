@@ -18,7 +18,7 @@ CREATE policy "Any user can select from data_components_history" on public.data_
 -- when the id is negative and a test_run_id is set (this is used for cleaning
 -- up tests against DB)
 CREATE policy "Any authenticated user can delete test data from data_components" on public.data_components for delete using (
-    auth.role() = 'authenticated'
+    (select auth.role()) = 'authenticated'
     AND data_components.id < 0
     AND data_components.test_run_id IS NOT NULL
 );
@@ -26,7 +26,7 @@ CREATE policy "Any authenticated user can delete test data from data_components"
 -- when the id is negative and a test_run_id is set (this is used for cleaning
 -- up tests against DB)
 CREATE policy "Any authenticated user can delete test data from data_components_history" on public.data_components_history for delete using (
-    auth.role() = 'authenticated'
+    (select auth.role()) = 'authenticated'
     AND data_components_history.id < 0
     AND data_components_history.test_run_id IS NOT NULL
 );

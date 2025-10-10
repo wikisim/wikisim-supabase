@@ -11,14 +11,14 @@ import type {
 import {
     factory_get_data_components_by_id_and_version,
 } from "../_shared/deno_get_data_components_by_id_and_version.ts"
-import { deno_get_supabase } from "../_shared/deno_get_supabase.ts"
+import { deno_get_supabase_as_user } from "../_shared/deno_get_supabase.ts"
 import {
     prepare_data_component_for_db_insert,
 } from "../_shared/prepare_data_component_for_db.ts"
 import { CORS_headers_sans_content_type, respond } from "../_shared/respond.ts"
 
 
-type SupabaseClient = ReturnType<typeof deno_get_supabase>
+type SupabaseClient = ReturnType<typeof deno_get_supabase_as_user>
 
 
 const field_validators = make_field_validators(z)
@@ -39,11 +39,11 @@ Deno.serve(async req =>
         // Type guard as this should have already been validated by Supabase
         if (!auth_header)
         {
-            return respond(401, { ef_error: ERRORS.ERR28.message })
+            return respond(401, { ef_error: ERRORS.ERR28_insert.message })
         }
 
         // Make a supabase client using the auth_header so that RLS policies are applied.
-        const supabase = deno_get_supabase(auth_header)
+        const supabase = deno_get_supabase_as_user(auth_header)
 
         const payload = await req.json()
 

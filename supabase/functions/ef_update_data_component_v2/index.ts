@@ -11,7 +11,7 @@ import {
 import {
     factory_get_data_components_by_id_and_version,
 } from "../_shared/deno_get_data_components_by_id_and_version.ts"
-import { deno_get_supabase, SupabaseClient } from "../_shared/deno_get_supabase.ts"
+import { deno_get_supabase_as_user, SupabaseClient } from "../_shared/deno_get_supabase.ts"
 import {
     prepare_data_component_for_db_update,
 } from "../_shared/prepare_data_component_for_db.ts"
@@ -40,7 +40,7 @@ Deno.serve(async req =>
         }
 
         // Make a supabase client using the auth_header so that RLS policies are applied.
-        const supabase = deno_get_supabase(auth_header)
+        const supabase = deno_get_supabase_as_user(auth_header)
 
         const payload = await req.json()
 

@@ -1,8 +1,17 @@
+// Shared between
+// wikisim-supabase/supabase/functions/_shared/deno_get_supabase.ts
+// wikisim-server/src/deno_get_supabase.ts
+
 import { createClient } from "jsr:@supabase/supabase-js@2.44.2"
 
+import { Database, supabase_anon_key, supabase_url } from "./core.ts"
 
-import { supabase_anon_key, supabase_url } from "../_core/src/supabase/constants.ts"
-import type { Database } from "../_core/src/supabase/interface.ts"
+
+
+export function deno_get_supabase_as_anon()
+{
+    return createClient<Database>(supabase_url, supabase_anon_key)
+}
 
 
 export function deno_get_supabase_as_user(auth_header: string)
@@ -27,4 +36,18 @@ export function deno_get_supabase_service_role()
 }
 
 
+export function get_supabase_clients(auth_header: string | null)
+{
+    const user_or_anon = auth_header
+        ? deno_get_supabase_as_user(auth_header)
+        : deno_get_supabase_as_anon()
+
+    return {
+        user_or_anon,
+        service_role: deno_get_supabase_service_role(),
+    }
+}
+
+
 export type SupabaseClient = ReturnType<typeof deno_get_supabase_as_user>
+export type SupabaseClients = ReturnType<typeof get_supabase_clients>

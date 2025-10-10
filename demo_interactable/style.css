@@ -1,0 +1,29 @@
+
+* {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1
+{
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+pre
+{
+    background-color: #f4f4f4;
+    width: 90%;
+    white-space: pre-wrap;
+    margin: 0px;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+body, h1, pre, p
+{
+    margin: 30px;
+}

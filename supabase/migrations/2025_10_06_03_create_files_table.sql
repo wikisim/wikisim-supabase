@@ -147,10 +147,9 @@ LANGUAGE plpgsql
 SET search_path = ''
 AS $$
 BEGIN
-    INSERT INTO public.public_storage_files_metadata (file_id, allowed)
-    VALUES (NEW.file_id, NEW.allowed)
-    ON CONFLICT (file_id) DO UPDATE
-    SET allowed = EXCLUDED.allowed;  -- Set allowed to the new value
+    UPDATE public.public_storage_files_metadata
+    SET allowed = NEW.allowed
+    WHERE file_id = NEW.file_id;
 
     RETURN NEW;
 END;

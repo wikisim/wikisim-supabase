@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@std/media-types@*": "1.1.0",
     "npm:@eslint/js@9.31.0": "9.31.0",
     "npm:@supabase/supabase-js@2.44.2": "2.44.2",
     "npm:@types/deno@2.3.0": "2.3.0",
@@ -8,6 +9,11 @@
     "npm:typescript-eslint@8.36.0": "8.36.0_eslint@9.31.0_typescript@5.8.3_@typescript-eslint+parser@8.36.0__eslint@9.31.0__typescript@5.8.3",
     "npm:typescript@5.8.3": "5.8.3",
     "npm:zod@4.1.8": "4.1.8"
+  },
+  "jsr": {
+    "@std/media-types@1.1.0": {
+      "integrity": "c9d093f0c05c3512932b330e3cc1fe1d627b301db33a4c2c2185c02471d6eaa4"
+    }
   },
   "npm": {
     "@eslint-community/eslint-utils@4.9.0_eslint@9.31.0": {

@@ -25,18 +25,18 @@ export function deno_get_supabase_as_user(auth_header: string)
 }
 
 
-export function deno_get_supabase_service_role()
+export function deno_get_supabase_service_role(supabase_service_role_level?: string)
 {
-    const supabase_service_role = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
-    if (!supabase_service_role)
+    supabase_service_role_level ||= Deno.env.get("SECRET_ROLE_UPLOAD_INTERACTABLE_FILES_KEY")
+    if (!supabase_service_role_level)
     {
-        throw new Error("SUPABASE_SERVICE_ROLE_KEY env var not set")
+        throw new Error("SECRET_ROLE_UPLOAD_INTERACTABLE_FILES_KEY env var not set")
     }
-    return createClient<Database>(supabase_url, supabase_service_role)
+    return createClient<Database>(supabase_url, supabase_service_role_level)
 }
 
 
-export function get_supabase_clients(auth_header: string | null)
+export function deno_get_supabase_clients(auth_header: string | null, supabase_service_role_level?: string)
 {
     const user_or_anon = auth_header
         ? deno_get_supabase_as_user(auth_header)
@@ -44,10 +44,10 @@ export function get_supabase_clients(auth_header: string | null)
 
     return {
         user_or_anon,
-        service_role: deno_get_supabase_service_role(),
+        service_role: deno_get_supabase_service_role(supabase_service_role_level),
     }
 }
 
 
 export type SupabaseClient = ReturnType<typeof deno_get_supabase_as_user>
-export type SupabaseClients = ReturnType<typeof get_supabase_clients>
+export type SupabaseClients = ReturnType<typeof deno_get_supabase_clients>

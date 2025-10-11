@@ -1,6 +1,6 @@
 // Run with: deno run --allow-env --allow-net --allow-read supabase/migrations/2025_10_06_02_create_storage.js
 
-import { createClient } from "npm:@supabase/supabase-js"
+import { createClient } from "jsr:@supabase/supabase-js@2.44.2"
 
 import {
     INTERACTABLES_FILES_BUCKET,

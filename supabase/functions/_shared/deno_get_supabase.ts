@@ -2,7 +2,7 @@
 // wikisim-supabase/supabase/functions/_shared/deno_get_supabase.ts
 // wikisim-server/src/deno_get_supabase.ts
 
-import { createClient } from "jsr:@supabase/supabase-js@2.44.2"
+import { createClient } from "@supabase/supabase-js"
 
 import { Database, supabase_anon_key, supabase_url } from "./core.ts"
 

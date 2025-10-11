@@ -12,8 +12,9 @@ Supabase migrations and edge functions for WikiSim, an open source platform for 
 
 Install the deno CLI (see [./supabase/functions/README.md](./supabase/functions/README.md))
 
-    pnpm test
     pnpm install
+    deno install
+    pnpm test
     pnpm check
 
 ### Pre-push Hook

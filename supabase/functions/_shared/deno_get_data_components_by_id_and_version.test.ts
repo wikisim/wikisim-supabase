@@ -1,13 +1,13 @@
 /// <reference lib="deno.ns" />
 // deno-lint-ignore-file no-explicit-any
-import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals } from "@std/assert"
 
-import { IdAndVersion } from "../_core/src/data/id.ts";
-import { ERRORS } from "../_core/src/errors.ts";
+import { IdAndVersion } from "../_core/src/data/id.ts"
+import { ERRORS } from "../_core/src/errors.ts"
 import {
     factory_get_data_components_by_id_and_version,
-} from "./deno_get_data_components_by_id_and_version.ts";
-import { PartialDataComponent } from "./interface.ts";
+} from "./deno_get_data_components_by_id_and_version.ts"
+import { PartialDataComponent } from "./interface.ts"
 
 
 function make_mock_supabase({ data, error }: { data: any, error: any })

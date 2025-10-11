@@ -1,0 +1,11 @@
+{
+  "tasks": {},
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "strict": true
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1.0.15",
+    "@supabase/supabase-js": "jsr:@supabase/supabase-js@2.44.2"
+  }
+}

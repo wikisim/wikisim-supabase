@@ -1,5 +1,5 @@
 /// <reference lib="deno.ns" />
-import { assert, assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts"
+import { assert, assertEquals } from "@std/assert"
 
 import { DataComponent } from "../_core/src/data/interface.ts"
 import { data_component_all_fields_set } from "../_core/src/test/fixtures.ts"

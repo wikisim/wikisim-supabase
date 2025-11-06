@@ -3,9 +3,9 @@ import { assertEquals } from "@std/assert"
 
 import { IdAndVersion } from "../_core/src/data/id.ts"
 import type { DataComponent } from "../_core/src/data/interface.ts"
+import { tiptap_mention_chip } from "../_core/src/rich_text/tiptap_mention_chip.ts"
 import {
     data_component_all_fields_set,
-    tiptap_mention_chip
 } from "../_core/src/test/fixtures.ts"
 import {
     get_recursive_dependency_ids,

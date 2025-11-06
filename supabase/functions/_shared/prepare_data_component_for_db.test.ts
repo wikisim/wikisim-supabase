@@ -39,7 +39,14 @@ Deno.test("prepare_data_component_for_db_insert", async () =>
     assertEquals(result.p_units, data_component.units, "p_units should match expected value")
     assertEquals(result.p_dimension_ids, data_component.dimension_ids!.map(d => d.to_str()), "p_dimension_ids should match expected value")
     assertEquals(result.p_function_arguments, no_ids(data_component.function_arguments), "p_function_arguments should match expected value")
-    assertEquals(result.p_scenarios, no_ids(data_component.scenarios) as unknown, "p_scenarios should match expected value")
+    assertEquals(result.p_scenarios, [
+        {
+            values: {
+                "arg1": { value: "789", iterate_over: true },
+                "arg2": { value: "112", use_previous_result: true },
+            }
+        }
+    ], "p_scenarios should match expected value")
 
     assertEquals(data_component.title, "<p>Modified Title</p>", "Assert what component.title was")
     assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
@@ -78,7 +85,14 @@ Deno.test("prepare_data_component_for_db_update", async () =>
     assertEquals(result.p_units, data_component.units, "p_units should match expected value")
     assertEquals(result.p_dimension_ids, data_component.dimension_ids!.map(d => d.to_str()), "p_dimension_ids should match expected value")
     assertEquals(result.p_function_arguments, no_ids(data_component.function_arguments), "p_function_arguments should match expected value")
-    assertEquals(result.p_scenarios, no_ids(data_component.scenarios) as unknown, "p_scenarios should match expected value")
+    assertEquals(result.p_scenarios, [
+        {
+            values: {
+                "arg1": { value: "789", iterate_over: true },
+                "arg2": { value: "112", use_previous_result: true },
+            }
+        }
+    ], "p_scenarios should match expected value")
 
     assertEquals(data_component.title, "<p>Modified Title</p>", "Assert what component.title was")
     assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
@@ -117,7 +131,7 @@ Deno.test(`prepare_data_component_for_db_insert for "function" value_type`, asyn
 
     const result = await prepare_data_component_for_db_insert(data_component, () => Promise.resolve([]))
 
-    assertEquals(result.p_result_value, "(a, b = 1) => a + b", "p_result_value should be calculated for function value_type")
+    assertEquals(result.p_result_value, "(a, b = 1) => {\n    return a + b\n}", "p_result_value should be calculated for function value_type")
 })
 
 

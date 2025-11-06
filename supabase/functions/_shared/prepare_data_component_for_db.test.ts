@@ -110,8 +110,8 @@ Deno.test(`prepare_data_component_for_db_insert for "function" value_type`, asyn
         input_value: "a + b",
         result_value: "", // result_value should be set by edge function
         function_arguments: [
-            { id: 0, name: "a" },
-            { id: 1, name: "b", default_value: "1" },
+            { local_temp_id: "0", name: "a" },
+            { local_temp_id: "1", name: "b", default_value: "1" },
         ],
     })
 
@@ -121,9 +121,9 @@ Deno.test(`prepare_data_component_for_db_insert for "function" value_type`, asyn
 })
 
 
-function no_ids<T extends { id: number }>(items?: T[]): undefined | (Omit<T, "id">[])
+function no_ids<T extends { local_temp_id: string }>(items?: T[]): undefined | (Omit<T, "local_temp_id">[])
 {
     if (!items) return items
 
-    return items.map(({ id: _, ...rest }) => rest)
+    return items.map(({ local_temp_id: _, ...rest }) => rest)
 }

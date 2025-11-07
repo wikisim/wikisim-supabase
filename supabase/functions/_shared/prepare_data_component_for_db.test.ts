@@ -44,7 +44,16 @@ Deno.test("prepare_data_component_for_db_insert", async () =>
             values: {
                 "arg1": { value: "789", iterate_over: true },
                 "arg2": { value: "112", use_previous_result: true },
-            }
+            },
+            description: "Some scenario description",
+            expectation_met: true,
+            expected_result: "Modified Value",
+            selected_path_names: {
+                '[{"key":"data"},{"index":"*"},{"key":"value"},{"index":0}]': "Some field name"
+            },
+            selected_paths: [
+                [{ "key": "data" }, { "index": "*" }, { "key": "value" }, { "index": 0 }]
+            ],
         }
     ], "p_scenarios should match expected value")
 
@@ -90,7 +99,16 @@ Deno.test("prepare_data_component_for_db_update", async () =>
             values: {
                 "arg1": { value: "789", iterate_over: true },
                 "arg2": { value: "112", use_previous_result: true },
-            }
+            },
+            description: "Some scenario description",
+            expectation_met: true,
+            expected_result: "Modified Value",
+            selected_path_names: {
+                '[{"key":"data"},{"index":"*"},{"key":"value"},{"index":0}]': "Some field name"
+            },
+            selected_paths: [
+                [{ "key": "data" }, { "index": "*" }, { "key": "value" }, { "index": 0 }]
+            ],
         }
     ], "p_scenarios should match expected value")
 

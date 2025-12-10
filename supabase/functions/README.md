@@ -17,6 +17,10 @@ deno cache https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts
 3. Check it worked: `supabase projects list`
 4. Link the project: `supabase link --project-ref sfkgqscbwofiphfxhnxg`
 
+## Call the Function Locally
+
+todo
+
 ## Deploy the Edge Functions
 
 To deploy all edge functions from the project root, run:
@@ -25,10 +29,10 @@ supabase secrets set --env-file .env
 supabase functions deploy
 ```
 
-## Test the Function
+## Call the Function in Production
 
 ```bash
-curl -X POST 'https://sfkgqscbwofiphfxhnxg.supabase.co/functions/v1/compute_field_values' \
+curl -X POST 'https://sfkgqscbwofiphfxhnxg.supabase.co/functions/v1/ef_insert_data_component_v2' \
   -H 'Authorization: Bearer PROJECT_ANON_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

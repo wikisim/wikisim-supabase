@@ -54,7 +54,7 @@ CREATE TABLE data_components
     plain_title TEXT NOT NULL,
     plain_description TEXT NOT NULL,
 
-    plain_search_text TEXT GENERATED ALWAYS AS (plain_title || ' ' || plain_description) STORED,
+    -- plain_search_text TEXT GENERATED ALWAYS AS (plain_title || ' ' || plain_description) STORED,
     search_vector tsvector GENERATED ALWAYS AS (to_tsvector('english', plain_title || ' ' || plain_description)) STORED,
 
     test_run_id TEXT, -- Optional field for test runs
@@ -83,8 +83,8 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA extension_pg_trgm;
 
 -- Create search indices for data_components
 CREATE INDEX idx_data_components_search_vector ON data_components USING GIN (search_vector);
-CREATE INDEX idx_data_components_plain_search_text_trgm
-  ON data_components USING GIN (plain_search_text extension_pg_trgm.gin_trgm_ops);
+-- CREATE INDEX idx_data_components_plain_search_text_trgm
+--   ON data_components USING GIN (plain_search_text extension_pg_trgm.gin_trgm_ops);
 
 
 

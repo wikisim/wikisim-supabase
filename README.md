@@ -24,3 +24,13 @@ If you want to ensure your tests, typescript compilation, and linting pass befor
 ln -s $(pwd)/scripts/pre-push.sh .git/hooks/pre-push
 chmod +x .git/hooks/pre-push
 ```
+
+## Migrations
+
+Migrations are currently applied manually via the Supabase web SQL REPL.
+
+## Deployment
+
+The Supabase edge functions should be deployed automatically on pushing to `main` via GitHub Actions.
+
+See [./supabase/functions/README.md](./supabase/functions/README.md) for edge function deployment instructions.

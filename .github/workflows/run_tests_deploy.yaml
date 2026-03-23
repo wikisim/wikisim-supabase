@@ -1,0 +1,75 @@
+name: Tests and Deploy
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+          run_install: false
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.4.5
+
+      - name: Install dependencies
+        run: deno install
+
+      - name: Run Tests && check TypeScript
+        run: pnpm run test
+
+      - name: Install dependencies needed for linting
+        run: pnpm install
+
+      - name: Run Lint
+        run: pnpm run lint
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.20.3
+
+      - name: Set Edge Function Secrets
+        run: |
+          supabase secrets set \
+            SERVER_SECRET="${{ secrets.SUPABASE_EDGE_SERVER_SECRET }}" \
+            SECRET_ROLE_UPLOAD_INTERACTABLE_FILES_KEY="${{ secrets.SUPABASE_EDGE_UPLOAD_KEY }}" \
+            --project-ref "sfkgqscbwofiphfxhnxg"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Deploy Edge Functions
+        run: supabase functions deploy --project-ref "sfkgqscbwofiphfxhnxg"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}

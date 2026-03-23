@@ -80,6 +80,9 @@ CREATE TYPE public.data_component_insert_params AS (
     p_function_arguments JSONB,
     p_scenarios JSONB,
 
+    p_subject_id integer,
+    p_according_to_id integer,
+
     -- Optional field for test runs
     p_test_run_id text,
     -- Optional id field for test runs, can only be negative
@@ -157,6 +160,8 @@ BEGIN
             dimension_ids,
             function_arguments,
             scenarios,
+            subject_id,
+            according_to_id,
             plain_title,
             plain_description,
             test_run_id,
@@ -185,6 +190,8 @@ BEGIN
             component.p_dimension_ids,
             component.p_function_arguments,
             component.p_scenarios,
+            component.p_subject_id,
+            component.p_according_to_id,
             component.p_plain_title,
             component.p_plain_description,
             component.p_test_run_id,
@@ -235,7 +242,10 @@ CREATE TYPE public.data_component_update_params AS (
     p_units text,
     p_dimension_ids text[],
     p_function_arguments JSONB,
-    p_scenarios JSONB
+    p_scenarios JSONB,
+
+    p_subject_id integer,
+    p_according_to_id integer
 
     -- Optional field for test runs should not be updatable
     -- p_test_run_id text,
@@ -299,6 +309,9 @@ BEGIN
             dimension_ids = component.p_dimension_ids,
             function_arguments = component.p_function_arguments,
             scenarios = component.p_scenarios,
+
+            subject_id = component.p_subject_id,
+            according_to_id = component.p_according_to_id,
 
             plain_title = component.p_plain_title, -- Server-side converted plain text
             plain_description = component.p_plain_description -- Server-side converted plain text

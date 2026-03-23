@@ -177,6 +177,9 @@ BEGIN
         function_arguments,
         scenarios,
 
+        subject_id,
+        according_to_id,
+
         plain_title,
         plain_description,
 
@@ -211,6 +214,9 @@ BEGIN
         NEW.dimension_ids,
         NEW.function_arguments,
         NEW.scenarios,
+
+        NEW.subject_id,
+        NEW.according_to_id,
 
         NEW.plain_title,
         NEW.plain_description,

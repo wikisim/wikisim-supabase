@@ -51,6 +51,9 @@ CREATE TABLE data_components
     function_arguments JSONB, -- Array of function arguments (inputs) for function type data components
     scenarios JSONB, -- Array of scenarios for function type data components
 
+    subject_id INTEGER, -- Optional field to link to a subject data component
+    according_to_id INTEGER, -- Optional field to link to an "according to" data component
+
     plain_title TEXT NOT NULL,
     plain_description TEXT NOT NULL,
 
@@ -61,6 +64,8 @@ CREATE TABLE data_components
 
     CONSTRAINT data_components_owner_id_fk FOREIGN KEY (owner_id) REFERENCES auth.users(id),
     CONSTRAINT data_components_editor_id_fk FOREIGN KEY (editor_id) REFERENCES auth.users(id),
+    CONSTRAINT data_components_subject_id_fkey FOREIGN KEY (subject_id) REFERENCES data_components(id),
+    CONSTRAINT data_components_according_to_id_fkey FOREIGN KEY (according_to_id) REFERENCES data_components(id),
     CONSTRAINT data_components_test_data_id_and_run_id_consistency
     CHECK (
         (id < 0 AND id >= -20 AND test_run_id IS NOT NULL AND test_run_id <> '')
@@ -123,6 +128,9 @@ CREATE TABLE data_components_history
     function_arguments JSONB, -- Array of function arguments (inputs) for function type data components
     scenarios JSONB, -- Array of scenarios for function type data components
 
+    subject_id INTEGER, -- Optional field to link to a subject data component
+    according_to_id INTEGER, -- Optional field to link to an "according to" data component
+
     plain_title TEXT NOT NULL,
     plain_description TEXT NOT NULL,
 
@@ -132,6 +140,8 @@ CREATE TABLE data_components_history
     CONSTRAINT data_components_history_id_fkey FOREIGN KEY (id) REFERENCES data_components(id),
     CONSTRAINT data_components_history_owner_id_fk FOREIGN KEY (owner_id) REFERENCES auth.users(id),
     CONSTRAINT data_components_history_editor_id_fk FOREIGN KEY (editor_id) REFERENCES auth.users(id),
+    CONSTRAINT data_components_history_subject_id_fkey FOREIGN KEY (subject_id) REFERENCES data_components(id),
+    CONSTRAINT data_components_history_according_to_id_fkey FOREIGN KEY (according_to_id) REFERENCES data_components(id),
     CONSTRAINT data_components_history_test_data_id_and_run_id_consistency
     CHECK (
         (id < 0 AND test_run_id IS NOT NULL AND test_run_id <> '')

@@ -36,7 +36,7 @@ export async function prepare_data_component_for_db_insert (
         component: data_component,
         data_components_by_id_and_version: {},
         convert_tiptap_to_javascript: deno_convert_tiptap_to_javascript,
-        evaluate_code_in_sandbox: undefined,
+        evaluate_code_in_runtime: undefined,
     })
 
     if (result_value_response?.error)
@@ -78,6 +78,8 @@ export async function prepare_data_component_for_db_insert (
         p_dimension_ids: row.dimension_ids,
         p_function_arguments: row.function_arguments,
         p_scenarios: row.scenarios,
+        p_subject_id: row.subject_id,
+        p_according_to_id: row.according_to_id,
         p_plain_title,
         p_plain_description,
         p_test_run_id: row.test_run_id,

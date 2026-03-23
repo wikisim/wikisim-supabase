@@ -69,15 +69,31 @@ Deno.test(`get_recursive_dependency_ids`, async () =>
         },
         {
             id: new IdAndVersion(6, 1),
-            value_type: "number",
-            input_value: "6 + tiptap5() ",
-            result_value: "22",
+            value_type: "function",
+            input_value: "6 + tiptap5() ", // result == 22
+            recursive_dependency_ids: [
+                // id1 and id3 should be included as referenced indirectly via id4
+                new IdAndVersion(1, 1),
+                new IdAndVersion(3, 1),
+                // Again id2 should not be included as not referenced directly or indirectly
+                // new IdAndVersion(2, 1),
+                new IdAndVersion(4, 1),
+                new IdAndVersion(5, 1),
+            ],
+        },
+        {
+            id: new IdAndVersion(7, 1),
+            value_type: "number",  // <----------- Note: this is not a function
+            input_value: "7 + tiptap6() ",
+            result_value: "should be '29' but is not tested yet",
             recursive_dependency_ids: [
                 // When value_type is not "function" then we're storing the
-                // direct dependencies only, not indirect ones, to make it
-                // easier later on to build a dependency graph of data
+                // direct dependencies only, not indirect ones.  This makes
+                // it more performant to manage recursive_dependency_ids
+                // Whilst also providing the depth-1 of dependencies to make it
+                // easier later on to build a full dependency graph of data
                 // components.
-                new IdAndVersion(5, 1),
+                new IdAndVersion(6, 1),
             ],
         },
     ]

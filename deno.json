@@ -1,6 +1,9 @@
 {
   "tasks": {},
   "nodeModulesDir": "auto",
+  "fmt": {
+    "semiColons": false
+  },
   "compilerOptions": {
     "strict": true
   },

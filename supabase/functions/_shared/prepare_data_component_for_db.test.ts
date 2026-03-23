@@ -57,7 +57,7 @@ Deno.test("prepare_data_component_for_db_insert", async () =>
         }
     ], "p_scenarios should match expected value")
 
-    assertEquals(data_component.title, "<p>Modified Title</p>", "Assert what component.title was")
+    assertEquals(data_component.title, "Modified Title", "Assert what component.title was")
     assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
     assertEquals(result.p_plain_title, "Modified Title", "p_plain_title should be calculated from tiptap text")
     assertEquals(result.p_plain_description, "Modified Description", "p_plain_description should be calculated from tiptap text")
@@ -112,7 +112,7 @@ Deno.test("prepare_data_component_for_db_update", async () =>
         }
     ], "p_scenarios should match expected value")
 
-    assertEquals(data_component.title, "<p>Modified Title</p>", "Assert what component.title was")
+    assertEquals(data_component.title, "Modified Title", "Assert what component.title was")
     assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
     assertEquals(result.p_plain_title, "Modified Title", "p_plain_title should be calculated from tiptap text")
     assertEquals(result.p_plain_description, "Modified Description", "p_plain_description should be calculated from tiptap text")

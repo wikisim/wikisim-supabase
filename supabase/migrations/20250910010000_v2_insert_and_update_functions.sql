@@ -15,6 +15,7 @@ CREATE POLICY "Allow service_role only"
 
 -- Use the supabase web interface to create a new secret, e.g.
 -- INSERT INTO ws_private.app_secrets (key_name) VALUES ('server_secret');
+-- SELECT * FROM ws_private.app_secrets;
 -- then update the edge function environment variable to match the generated
 -- value and re-deploy them.
 -- Then rename (or delete) the older server_secret from the secrets table to

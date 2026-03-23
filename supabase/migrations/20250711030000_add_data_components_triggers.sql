@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS ws_private;
-
 
 -- Function and trigger on before insert to data_components to ensure version_number starts at 1
 CREATE OR REPLACE FUNCTION ws_private.check_inserting_data_component_version_number_starts_at_1()

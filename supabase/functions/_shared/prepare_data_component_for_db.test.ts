@@ -56,6 +56,8 @@ Deno.test("prepare_data_component_for_db_insert", async () =>
             ],
         }
     ], "p_scenarios should match expected value")
+    assertEquals(result.p_subject_id, -30, "p_subject_id should match expected value")
+    assertEquals(result.p_according_to_id, -20, "p_according_to_id should match expected value")
 
     assertEquals(data_component.title, "Modified Title", "Assert what component.title was")
     assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")
@@ -111,6 +113,8 @@ Deno.test("prepare_data_component_for_db_update", async () =>
             ],
         }
     ], "p_scenarios should match expected value")
+    assertEquals(result.p_subject_id, -30, "p_subject_id should match expected value")
+    assertEquals(result.p_according_to_id, -20, "p_according_to_id should match expected value")
 
     assertEquals(data_component.title, "Modified Title", "Assert what component.title was")
     assertEquals(data_component.description, "<p>Modified Description</p>", "Assert what component.description was")

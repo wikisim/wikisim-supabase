@@ -33,6 +33,14 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "attachSimplePort": 9229
+        },
+        {
+            "name": "Attach to Supabase Functions",
+            "type": "pwa-node",
+            "request": "attach",
+            "attachSimplePort": 8083,
+            // Restart on disconnect so VS Code re-attaches when a new function isolate starts
+            "restart": true
         }
     ]
 }

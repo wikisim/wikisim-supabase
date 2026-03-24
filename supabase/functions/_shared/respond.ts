@@ -1,13 +1,13 @@
 import {
-    DBDataComponentInsertV2Returns,
-    DBDataComponentUpdateV2Returns,
+    EFDataComponentInsertV2Returns,
+    EFDataComponentUpdateV2Returns
 } from "../_core/src/supabase/index.ts"
 
 
 
 type EFInsertDataComponentV2Response =
 {
-    ef_data: DBDataComponentInsertV2Returns
+    ef_data: EFDataComponentInsertV2Returns
     ef_error?: undefined
 } | {
     ef_data?: undefined
@@ -16,14 +16,14 @@ type EFInsertDataComponentV2Response =
 
 type EFUpdateDataComponentV2Response =
 {
-    ef_data: DBDataComponentUpdateV2Returns
+    ef_data: EFDataComponentUpdateV2Returns
     ef_error?: undefined
 } | {
     ef_data?: undefined
     ef_error: string
 }
 
-type EFUpsertReturn = DBDataComponentInsertV2Returns | DBDataComponentUpdateV2Returns | string
+type EFUpsertReturn = EFDataComponentInsertV2Returns | EFDataComponentUpdateV2Returns | string
 
 
 export const CORS_headers_sans_content_type = {

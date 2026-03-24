@@ -19,7 +19,37 @@ deno cache https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts
 
 ## Call the Function Locally
 
-todo
+* Run `supabase start`
+* Go to the SQL Editor at http://127.0.0.1:54323 and run `INSERT INTO ws_private.app_secrets (key_name) VALUES ('server_secret');` to generate a new server secret.
+* Run `SELECT * FROM ws_private.app_secrets;` and copy and paste the secret_value into the `supabase/functions/.env` file for the edge functions
+* Run `supabase stop && supabase start`
+* To find the email login links, visit http://127.0.0.1:54324
+* ~~To find edge function logs, visit Supabase Studio at http://127.0.0.1:54323/project/default/logs/edge-functions-logs~~
+* To serve functions locally (with live logs in terminal):
+    * `supabase functions serve`
+    <!-- * `supabase functions serve --inspect-mode brk` to enable debugging (see below) -->
+
+<!-- ## Debugging Edge Functions
+
+### Command line (inspect mode)
+
+Run the function server with the V8 inspector enabled:
+```bash
+supabase functions serve --inspect-mode brk
+```
+* `brk` — pauses on the first line until a debugger attaches (also respects `debugger` statements)
+* `detach` — starts the inspector without pausing (useful for attaching mid-flight)
+
+The inspector listens on port **8083**.
+
+### VS Code debugger
+
+1. Place a `debugger` statement (or a breakpoint via the gutter) in your edge function code.
+2. Run `supabase functions serve --inspect-mode brk` in the terminal.
+3. In VS Code, open the **Run and Debug** panel and launch **"Attach to Supabase Functions"**.
+4. VS Code will attach on port 8083 and break at the first `debugger` statement or breakpoint.
+
+> Note: each time a function is invoked it spawns a new isolate — you may need to re-attach after the first breakpoint resolves. -->
 
 ## Deploy the Edge Functions
 

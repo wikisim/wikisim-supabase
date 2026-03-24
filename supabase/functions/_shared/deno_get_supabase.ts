@@ -7,16 +7,25 @@ import { createClient } from "jsr:@supabase/supabase-js@2.44.2"
 import { Database, supabase_anon_key, supabase_url } from "./core.ts"
 
 
+// // Prefer the env vars injected by Supabase at runtime so that local dev
+// // (where JWTs are signed by the local instance) and production both use the
+// // matching endpoint.  Fall back to the hardcoded constants for contexts where
+// // the env vars are not available (e.g. wikisim-server).
+// const runtime_url  = (typeof Deno !== "undefined" && Deno.env.get("SUPABASE_URL"))  || supabase_url
+// const runtime_anon = (typeof Deno !== "undefined" && Deno.env.get("SUPABASE_ANON_KEY")) || supabase_anon_key
+const runtime_url  = supabase_url
+const runtime_anon = supabase_anon_key
+
 
 export function deno_get_supabase_as_anon()
 {
-    return createClient<Database>(supabase_url, supabase_anon_key)
+    return createClient<Database>(runtime_url, runtime_anon)
 }
 
 
 export function deno_get_supabase_as_user(auth_header: string)
 {
-    return createClient<Database>(supabase_url, supabase_anon_key, {
+    return createClient<Database>(runtime_url, runtime_anon, {
         global:
         {
             headers: { Authorization: auth_header },

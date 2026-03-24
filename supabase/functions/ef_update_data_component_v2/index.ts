@@ -8,6 +8,7 @@ import { ERRORS } from "../_core/src/errors.ts"
 import {
     EFUpdateDataComponentV2Args,
 } from "../_core/src/supabase/edge_functions.ts"
+import { EFDataComponentUpdateV2Returns } from "../_core/src/supabase/index.ts"
 import {
     factory_get_data_components_by_id_and_version,
 } from "../_shared/deno_get_data_components_by_id_and_version.ts"
@@ -93,11 +94,11 @@ async function save_to_db(supabase: SupabaseClient, payload: EFUpdateDataCompone
     }
 
     // Drop the search_vector field from the response given back to the client
-    const rest_of_rpc_data = rpc_data.map(data => {
+    const rest_of_rpc_data: EFDataComponentUpdateV2Returns = rpc_data.map(data => {
         const { search_vector: _, ...rest } = data
+        field_validators.validate_json(rest)
         return rest
     })
-    field_validators.validate_json(rest_of_rpc_data)
 
-    return respond(200, { ef_data: rpc_data } )
+    return respond(200, { ef_data: rest_of_rpc_data } )
 }

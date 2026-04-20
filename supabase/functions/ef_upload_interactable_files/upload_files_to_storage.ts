@@ -1,4 +1,4 @@
-import { FormFile } from "https://deno.land/x/multiparser@0.114.0/mod.ts"
+import { FormFile } from "multiparser"
 
 import { INTERACTABLES_FILES_BUCKET } from "../_core/src/supabase/constants.ts"
 import { deno_get_content_type } from "../_shared/deno_get_content_type.ts"

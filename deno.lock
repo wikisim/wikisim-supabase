@@ -6,6 +6,8 @@
     "jsr:@std/media-types@*": "1.1.0",
     "jsr:@supabase/supabase-js@2.44.2": "2.44.2",
     "npm:@eslint/js@9.31.0": "9.31.0",
+    "npm:@sentry/deno@*": "10.49.0",
+    "npm:@sentry/deno@10.49.0": "10.49.0",
     "npm:@supabase/auth-js@2.64.2": "2.64.2",
     "npm:@supabase/functions-js@2.4.1": "2.4.1",
     "npm:@supabase/node-fetch@2.6.15": "2.6.15",
@@ -128,6 +130,19 @@
       "dependencies": [
         "@nodelib/fs.scandir",
         "fastq"
+      ]
+    },
+    "@opentelemetry/api@1.9.1": {
+      "integrity": "sha512-gLyJlPHPZYdAk1JENA9LeHejZe1Ti77/pTeFm/nMXmQH/HFZlcS/O2XJB+L8fkbrNSqhdtlvjBVjxwUYanNH5Q=="
+    },
+    "@sentry/core@10.49.0": {
+      "integrity": "sha512-UaFeum3LUM1mB0d67jvKnqId1yWQjyqmaDV6kWngG03x+jqXb08tJdGpSoxjXZe13jFBbiBL/wKDDYIK7rCK4g=="
+    },
+    "@sentry/deno@10.49.0": {
+      "integrity": "sha512-u9O8DMGum859lrZXu4wfPKfRfUnRtdAAA1gDuoF7lFnxy4l82aTe5RtlzUpovHLxKV7aPv6B/TMubsEJrNxikQ==",
+      "dependencies": [
+        "@opentelemetry/api",
+        "@sentry/core"
       ]
     },
     "@supabase/auth-js@2.64.2": {
@@ -789,6 +804,8 @@
     }
   },
   "remote": {
+    "https://deno.land/std@0.114.0/bytes/equals.ts": "69f55fdbd45c71f920c1a621e6c0865dc780cd8ae34e0f5e55a9497b70c31c1b",
+    "https://deno.land/std@0.114.0/bytes/mod.ts": "fedb80b8da2e7ad8dd251148e65f92a04c73d6c5a430b7d197dc39588c8dda6f",
     "https://deno.land/x/deno_dom@v0.1.38/build/deno-wasm/deno-wasm.js": "98b1ad24a1c13284557917659402202e5c5258ab1431b3f3a82434ad36ffa05a",
     "https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts": "bfd999a493a6974e9fca4d331bee03bfb68cfc600c662cd0b48b21d67a2a8ba0",
     "https://deno.land/x/deno_dom@v0.1.38/src/api.ts": "0ff5790f0a3eeecb4e00b7d8fbfa319b165962cf6d0182a65ba90f158d74f7d7",
@@ -810,15 +827,20 @@
     "https://deno.land/x/deno_dom@v0.1.38/src/dom/selectors/sizzle.js": "c3aed60c1045a106d8e546ac2f85cc82e65f62d9af2f8f515210b9212286682a",
     "https://deno.land/x/deno_dom@v0.1.38/src/dom/utils-types.ts": "96db30e3e4a75b194201bb9fa30988215da7f91b380fca6a5143e51ece2a8436",
     "https://deno.land/x/deno_dom@v0.1.38/src/dom/utils.ts": "55f3e9dc71d6c4a54605888d3f99d26fb0cf9973924709f159252a6933ceeabe",
-    "https://deno.land/x/deno_dom@v0.1.38/src/parser.ts": "b65eb7e673fa7ca611de871de109655f0aa9fa35ddc1de73df1a5fc2baafc332"
+    "https://deno.land/x/deno_dom@v0.1.38/src/parser.ts": "b65eb7e673fa7ca611de871de109655f0aa9fa35ddc1de73df1a5fc2baafc332",
+    "https://deno.land/x/multiparser@0.114.0/deps.ts": "156a79ce9716a589a49a6486895828316115bc0f9c2107da6022fd5ca2e2ffc3",
+    "https://deno.land/x/multiparser@0.114.0/lib/multiParserV2.ts": "14f8dc877d74b489309764d6a1683f31454faa83c98e6b65cbcf375b727fc1d8",
+    "https://deno.land/x/multiparser@0.114.0/mod.ts": "1c83991a80f9f25b9876a726e96aedc02f09e72da280fcd74ddf1dbc105acfc6"
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1.0.15"
+      "jsr:@std/assert@1.0.15",
+      "npm:@sentry/deno@*"
     ],
     "packageJson": {
       "dependencies": [
         "npm:@eslint/js@9.31.0",
+        "npm:@sentry/deno@10.49.0",
         "npm:@types/deno@2.3.0",
         "npm:eslint@9.31.0",
         "npm:typescript-eslint@8.36.0",

@@ -17,6 +17,26 @@ Install the deno CLI (see [./supabase/functions/README.md](./supabase/functions/
     pnpm test
     pnpm check
 
+### Add a deno dependency
+
+e.g. to add sentry for error tracking to the deno.lock file:
+
+    deno install npm:@sentry/deno
+
+If the dependency begins with `npm:`, `jsr:`, or `https:` then it will need to be
+added to deno.json imports as follows:
+
+```json
+{
+  "imports": {
+    "@sentry/deno": "npm:@sentry/deno"
+  }
+}
+```
+
+If not then it will just show a `deno-lint(no-import-prefix)` warning.
+
+
 ### Pre-push Hook
 
 If you want to ensure your tests, typescript compilation, and linting pass before pushing, you can set up a pre-push hook:

@@ -9,6 +9,7 @@
         "check": "pnpm run test && pnpm run lint"
     },
     "dependencies": {
+        "@sentry/deno": "10.49.0"
     },
     "devDependencies": {
         "@eslint/js": "9.31.0",

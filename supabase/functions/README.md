@@ -66,6 +66,7 @@ Add the following secrets to: https://github.com/wikisim/wikisim-supabase/settin
 | `SUPABASE_ACCESS_TOKEN`       | Personal access token for authenticating the Supabase CLI                      | https://app.supabase.com/account/tokens — create a new token and store it securely                                             |
 | `SUPABASE_EDGE_SERVER_SECRET` | Runtime secret used by edge functions to authenticate internal server calls    | Retrieved from the `ws_private.app_secrets` table in the database                                                              |
 | `SUPABASE_EDGE_UPLOAD_KEY`    | API key granting the upload-interactable-files edge function access to storage | Supabase Dashboard → Project Settings → API Keys https://supabase.com/dashboard/project/sfkgqscbwofiphfxhnxg/settings/api-keys |
+| `SENTRY_DSN_WIKISIM_SUPABASE`    | Sentry DSN key allowing server to post errors to Sentry | Value from https://wikisim.sentry.io/settings/projects/wikisim-supabase/keys/ |
 
 ### Manual Deployment
 

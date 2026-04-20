@@ -82,7 +82,7 @@ async function upload_file(file_path: string, file_buffer: ArrayBuffer, supabase
             // Should we roll back file upload otherwise owner will never be set?
             return undefined
         }
-        console.log(`Owner updated successfully for file "${file_path}": `, update_data)
+        console.log(`Owner set successfully for file "${file_path}": `, update_data)
     }
     else
     {

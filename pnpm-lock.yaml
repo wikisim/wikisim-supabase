@@ -11,6 +11,9 @@ importers:
       '@sentry/deno':
         specifier: 10.49.0
         version: 10.49.0
+      '@supabase/sentry-js-integration':
+        specifier: 0.3.0
+        version: 0.3.0(@supabase/supabase-js@2.52.0)
     devDependencies:
       '@eslint/js':
         specifier: 9.31.0
@@ -788,6 +791,11 @@ packages:
 
   '@supabase/realtime-js@2.11.15':
     resolution: {integrity: sha512-HQKRnwAqdVqJW/P9TjKVK+/ETpW4yQ8tyDPPtRMKOH4Uh3vQD74vmj353CYs8+YwVBKubeUOOEpI9CT8mT4obw==}
+
+  '@supabase/sentry-js-integration@0.3.0':
+    resolution: {integrity: sha512-L6tr+M9OlYu3Ge3G33Cf5BptYYs30feJmD3zovCSRQezJOdtkbA361WVNyzCpSoIbUo4rcDVY/apklAhBewFBw==}
+    peerDependencies:
+      '@supabase/supabase-js': 2.x
 
   '@supabase/storage-js@2.7.1':
     resolution: {integrity: sha512-asYHcyDR1fKqrMpytAS1zjyEfvxuOIp1CIXX7ji4lHHcJKqyk+sLl/Vxgm4sN6u8zvuUtae9e4kDxQP2qrwWBA==}
@@ -2548,6 +2556,10 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  '@supabase/sentry-js-integration@0.3.0(@supabase/supabase-js@2.52.0)':
+    dependencies:
+      '@supabase/supabase-js': 2.52.0
 
   '@supabase/storage-js@2.7.1':
     dependencies:

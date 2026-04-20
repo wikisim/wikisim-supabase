@@ -1,4 +1,8 @@
 // deno-lint-ignore no-import-prefix
+import { SupabaseClient } from "jsr:@supabase/supabase-js@2.44.2"
+// deno-lint-ignore no-import-prefix
+import { supabaseIntegration } from "npm:@supabase/sentry-js-integration@0.3"
+// deno-lint-ignore no-import-prefix
 import * as Sentry from "npm:@sentry/deno@10.49.0"
 
 
@@ -13,6 +17,14 @@ export function setup_sentry(server_name: string): void
             // https://docs.sentry.io/platforms/javascript/guides/deno/configuration/options/#sendDefaultPii
             sendDefaultPii: true,
             serverName: server_name,
+
+              integrations: [
+                supabaseIntegration(SupabaseClient, Sentry, {
+                    tracing: true,
+                    breadcrumbs: true,
+                    errors: true,
+                }),
+            ],
         })
     }
     else

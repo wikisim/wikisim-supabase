@@ -102,7 +102,7 @@ async function save_to_db(supabase: SupabaseClient, payload: EFInsertDataCompone
     // Drop the search_vector field from the response given back to the client
     const rest_of_rpc_data: EFDataComponentInsertV2Returns = rpc_data.map(data => {
         const { search_vector: _, ...rest } = data
-        field_validators.validate_json(rest)
+        field_validators.validate_json(rest, true)
         return rest
     })
 

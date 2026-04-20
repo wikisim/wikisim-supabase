@@ -21,6 +21,7 @@ export function deno_get_content_type(file_path: string): string | undefined
         if (file_extension === "shx") content_type = "application/x-shx"
         else if (file_extension === "shp") content_type = "application/x-shp"
         else if (file_extension === "cpg") content_type = "application/x-cpg"
+        else if (file_extension === "prj") content_type = "application/x-prj"
         else
         {
             const error_message = `Could not determine content type for extension "${file_extension}"`

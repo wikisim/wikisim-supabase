@@ -21,7 +21,11 @@ Install the deno CLI (see [./supabase/functions/README.md](./supabase/functions/
 
 e.g. to add sentry for error tracking to the deno.lock file:
 
+1. `deno install ...`
+
     deno install npm:@sentry/deno
+
+2. Add alias to deno.json imports
 
 If the dependency begins with `npm:`, `jsr:`, or `https:` then it will need to be
 added to deno.json imports as follows:
@@ -35,6 +39,11 @@ added to deno.json imports as follows:
 ```
 
 If not then it will just show a `deno-lint(no-import-prefix)` warning.
+
+3. `pnpm install`
+
+Re-run `pnpm install` to update the pnpm-lock.yaml file with the new deno dependency
+which was added to the package.json.
 
 
 ### Pre-push Hook

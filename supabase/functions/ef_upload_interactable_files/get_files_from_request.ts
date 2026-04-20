@@ -1,3 +1,4 @@
+// deno-lint-ignore no-import-prefix
 import { FormFile, multiParser } from "https://deno.land/x/multiparser@0.114.0/mod.ts"
 
 import { ERRORS } from "../_core/src/errors.ts"

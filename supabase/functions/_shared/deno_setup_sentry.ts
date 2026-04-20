@@ -1,4 +1,5 @@
-import * as Sentry from "@sentry/deno"
+// deno-lint-ignore no-import-prefix
+import * as Sentry from "npm:@sentry/deno@10.49.0"
 
 
 export function setup_sentry(server_name: string): void

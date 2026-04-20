@@ -10,9 +10,14 @@ export function deno_get_content_type(file_path: string): string | undefined
 {
     // contentType from std/media-types only accepts the file extension
     const file_extension = file_path.split(".").slice(-1)[0]
-    const content_type = contentType(file_extension)
+    let content_type = contentType(file_extension)
 
-    console.log(`Mapping "${file_path}" to content type:`, content_type)
+    if (!content_type)
+    {
+        console.error(`Could not determine content type for file "${file_path}" with extension "${file_extension}"`)
+
+        if (file_extension === "shx") content_type = "application/x-shx"
+    }
 
     return content_type
 }

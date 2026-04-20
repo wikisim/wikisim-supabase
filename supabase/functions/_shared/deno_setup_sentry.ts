@@ -6,6 +6,11 @@ import { supabaseIntegration } from "npm:@supabase/sentry-js-integration@0.3"
 import * as Sentry from "npm:@sentry/deno@10.49.0"
 
 
+export const original_console = {
+    error: console.error,
+    warn: console.warn,
+    info: console.info,
+}
 
 export function setup_sentry(server_name: string): void
 {
@@ -29,17 +34,13 @@ export function setup_sentry(server_name: string): void
         })
 
 
-        const original_console_error = console.error
-        const original_console_warn = console.warn
-        const original_console_info = console.info
-
         console.error = function (...args)
         {
             if (args[0] instanceof Error) Sentry.captureException(args[0])
             else Sentry.captureMessage(args.map(error_to_string).join(" "), "error")
 
             // Log to the console
-            original_console_error.apply(console, args)
+            original_console.error.apply(console, args)
         }
 
         console.warn = function (...args)
@@ -47,7 +48,7 @@ export function setup_sentry(server_name: string): void
             Sentry.captureMessage(args.map(error_to_string).join(" "), "warning")
 
             // Log to the console
-            original_console_warn.apply(console, args)
+            original_console.warn.apply(console, args)
         }
 
         console.info = function (...args)
@@ -55,7 +56,7 @@ export function setup_sentry(server_name: string): void
             Sentry.captureMessage(args.map(error_to_string).join(" "), "info")
 
             // Log to the console
-            original_console_info.apply(console, args)
+            original_console.info.apply(console, args)
         }
 
 

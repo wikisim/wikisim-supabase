@@ -1,6 +1,7 @@
 // Run this locally with:
 //    deno run --allow-net --allow-env --allow-read index.ts
 // Also can run debugger through visual studio code .vscode/launch.json config "Debug Deno Server"
+
 import { setup_sentry } from "../_shared/deno_setup_sentry.ts"
 setup_sentry("ef_upload_interactable_files")
 

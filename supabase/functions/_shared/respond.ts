@@ -1,3 +1,6 @@
+// deno-lint-ignore no-import-prefix
+import * as Sentry from "npm:@sentry/deno@10.49.0"
+
 import {
     EFDataComponentInsertV2Returns,
     EFDataComponentUpdateV2Returns
@@ -58,6 +61,12 @@ export function respond(status: number, resp: EFInsertDataComponentV2Response | 
 
     if (status >= 400)
     {
+        if (status >= 500)
+        {
+            // Log error to Sentry
+            Sentry.captureMessage(`Server returning error ${status}: ${body}`, "error")
+        }
+
         return new Response(
             JSON.stringify({ code: status, message: body }),
             { status, headers: CORS_headers }

@@ -1,4 +1,8 @@
-import { z } from "npm:zod"
+// deno-lint-ignore no-import-prefix
+import { z } from "npm:zod@4.1.8"
+
+import { setup_sentry } from "../_shared/deno_setup_sentry.ts"
+setup_sentry("ef_insert_data_component_v2")
 
 import {
     hydrate_data_component_from_json,

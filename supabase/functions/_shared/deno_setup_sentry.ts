@@ -26,6 +26,8 @@ export function setup_sentry(server_name: string): void
                 }),
             ],
         })
+
+        console.log("Sentry initialized for", server_name)
     }
     else
     {

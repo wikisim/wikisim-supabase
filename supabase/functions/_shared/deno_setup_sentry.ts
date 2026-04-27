@@ -1,3 +1,6 @@
+// Shared between wikisim-supabase/supabase/functions/_shared/deno_setup_sentry.ts
+// and wikisim-server/src/deno_setup_sentry.ts
+
 // deno-lint-ignore no-import-prefix
 import { SupabaseClient } from "jsr:@supabase/supabase-js@2.44.2"
 // deno-lint-ignore no-import-prefix
@@ -24,7 +27,7 @@ export function setup_sentry(server_name: string): void
             sendDefaultPii: true,
             serverName: server_name,
 
-              integrations: [
+            integrations: [
                 supabaseIntegration(SupabaseClient, Sentry, {
                     tracing: true,
                     breadcrumbs: true,
